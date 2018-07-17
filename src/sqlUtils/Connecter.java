@@ -26,7 +26,7 @@ public class Connecter {
  			
  			//Connection 
  			System.out.print("Connecting to the database... "); 
- 			String URL = "jdbc:postgresql:ARM_innovationChallenge";
+ 			String URL = "jdbc:postgresql://arm-challenge.ckbmr2i1ii7b.eu-west-2.rds.amazonaws.com/ARMChallenge";
  			String USER = "guest";
  			String PASSWD = "guest";
 

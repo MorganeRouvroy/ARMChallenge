@@ -1,4 +1,4 @@
-
+package appInterface;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -22,18 +22,15 @@ import java.awt.FlowLayout;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import net.miginfocom.swing.MigLayout;
 import java.awt.Font;
 import java.awt.Dimension;
 
 import org.jxmapviewer.JXMapKit;
-import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 import java.awt.GridBagLayout;
-import javax.swing.border.BevelBorder;
 import javax.swing.UIManager;
 
 public class Interface extends JFrame {
