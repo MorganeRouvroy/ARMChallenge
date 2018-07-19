@@ -1,25 +1,19 @@
-package appInterface;
+package main.appInterface;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import sqlUtils.Connecter;
+import main.sqlUtils.Connector;
 
 import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import javax.swing.JLabel;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JTextField;
 import java.awt.FlowLayout;
-import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Font;
@@ -31,51 +25,51 @@ import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 import java.awt.GridBagLayout;
-import javax.swing.UIManager;
 
 public class Interface extends JFrame {
 
-	static GraphicsDevice device = GraphicsEnvironment
+	private static GraphicsDevice device = GraphicsEnvironment
 	        .getLocalGraphicsEnvironment().getScreenDevices()[0];
 	
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	private JTextField txtX;
-	private JPanel panel;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Interface frame = new Interface();
-					device.setFullScreenWindow(frame);
-					new Connecter();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		EventQueue.invokeLater(() -> {
+            try {
+                new Connector();
+                Interface frame = new Interface();
+                device.setFullScreenWindow(frame);
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.exit(1);
+            }
+        });
 	}
 
 	/**
 	 * Create the frame.
 	 */
-	public Interface() {
+	private Interface() {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
-				Connecter.closeCon();
+				Connector.closeCon();
 			}
 		});
 		setBackground(Color.WHITE);
 		setTitle("BBA Innovation Challenge App ");
 		setForeground(Color.WHITE);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setBounds(100, 100, 923, 575);
+
+        JPanel contentPane;
+        JTextField txtX;
+        JPanel panel;
+
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -97,11 +91,11 @@ public class Interface extends JFrame {
 		panel_1.add(Search);
 		Search.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
-		JComboBox comboBox = new JComboBox();
+		JComboBox<String> comboBox = new JComboBox<>();
 		comboBox.setFont(new Font("Tahoma", Font.PLAIN, 23));
 		comboBox.setBorder(new EmptyBorder(5, 5, 5, 5));
 		panel_1.add(comboBox);
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Hospitals", "Schools"}));
+		comboBox.setModel(new DefaultComboBoxModel<>(new String[] {"Hospitals", "Schools"}));
 		
 		JLabel lblNewLabel = new JLabel("in a range of ");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 23));
@@ -150,7 +144,7 @@ public class Interface extends JFrame {
         mapKit.setTileFactory(tileFactory);
 
         // Use 8 threads in parallel to load the tiles
-        tileFactory.setThreadPoolSize(8);
+        tileFactory.setThreadPoolSize(20);
 
         // Set the focus
         GeoPosition bogota = new GeoPosition(4.710989, -74.072092);

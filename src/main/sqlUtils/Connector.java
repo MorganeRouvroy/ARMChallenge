@@ -1,23 +1,19 @@
-/**
- * 
- */
-package sqlUtils;
+package main.sqlUtils;
 import java.sql.*;
 
+import static java.lang.System.err;
+
 /**
- * @author morga
  *
- */
-/**
-* Class managing the connection to the database
+ * Class managing the connection to the database
 */
 
-public class Connecter {
+public class Connector {
  	
-	static Connection con; //current connection
+	private static Connection con = null; //current connection
 	
 	/** Creation of the connection: driver registration + connection*/
- 	public Connecter(){
+ 	public Connector(){
  		try{
  			//PostGre driver registration
  			System.out.print("Loading PostGRE driver... "); 
@@ -32,12 +28,14 @@ public class Connecter {
 
  			con = DriverManager.getConnection(URL, USER, PASSWD);
  			System.out.println("connected");
- 			
+
 			//make autocommit OFF
 			con.setAutoCommit(false);
-			
+
  		} catch (SQLException e){
- 			System.err.println(e);
+ 			e.printStackTrace(err);
+            err.println("Cette application nécessite un accès internet.");
+            System.exit(1);
  		}
  	}
  	
@@ -56,6 +54,7 @@ public class Connecter {
  			System.out.println(" closed");
 		} catch (SQLException e){
 			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 }

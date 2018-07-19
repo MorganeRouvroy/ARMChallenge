@@ -5,4 +5,4 @@
  * @author morga
  *
  */
-package sqlUtils;
+package main.sqlUtils;
