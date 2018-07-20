@@ -1,6 +1,6 @@
-package main.appInterface;
+package src.main.appInterface;
 
-import main.sqlUtils.Connector;
+import src.main.sqlUtils.Connector;
 
 import javax.swing.*;
 import java.awt.*;

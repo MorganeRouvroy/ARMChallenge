@@ -1,6 +1,7 @@
-package test;
-import main.sqlUtils.Connector;
-import main.sqlUtils.FindNearestHospitalRequest;
+package src.test;
+
+import src.main.sqlUtils.Connector;
+import src.main.sqlUtils.FindNearestHospitalRequest;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

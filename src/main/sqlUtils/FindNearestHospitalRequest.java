@@ -1,4 +1,4 @@
-package main.sqlUtils;
+package src.main.sqlUtils;
 
 /**
  * SQL request for the nearest hospital from a given position
