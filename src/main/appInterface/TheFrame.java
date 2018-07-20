@@ -20,7 +20,7 @@ public class TheFrame extends JFrame {
                 frame.init();
 
                 // Use the close operations on the frame so it can be resizable and can be closed
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 frame.setMinimumSize(new Dimension(950,550));
                 frame.pack();
                 frame.setVisible(true);

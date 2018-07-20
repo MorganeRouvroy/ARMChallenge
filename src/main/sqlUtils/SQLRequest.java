@@ -1,5 +1,6 @@
 package main.sqlUtils;
 
+import javax.swing.*;
 import java.sql.*;
 
 /**
@@ -8,7 +9,7 @@ import java.sql.*;
  */
 public class SQLRequest {
     private PreparedStatement stmt = null;
-    ResultSet res = null ;
+    private ResultSet res = null ;
 
     /**
      * Default constructor. For request with no ?
@@ -28,8 +29,7 @@ public class SQLRequest {
     SQLRequest(String req, Object[] options) {
         try{
             Connection con = Connector.getCon();
-            stmt = con.prepareStatement(req);
-
+            stmt = con.prepareStatement(req, res.TYPE_SCROLL_INSENSITIVE, res.CONCUR_UPDATABLE);
             for (int i=1; i<=options.length; i++) {
                 stmt.setObject(i, options[i - 1]);
             }
@@ -43,6 +43,9 @@ public class SQLRequest {
         return res;
     }
 
+    /**
+     * Close the statement and the ResultSet.
+     */
     public void closeRequest(){
         try {
             res.close();
@@ -60,15 +63,20 @@ public class SQLRequest {
         }
     }
 
+    /**
+     * Print the results of a query on the terminal. Useful for debugging
+     */
     public void PrintResult() {
         try {
+            res.beforeFirst();
+            int columnsNumber = res.getMetaData().getColumnCount();
             while (res.next()) {
-                for (int i = 1; i <= 2; i++) {
+                for (int i = 1; i <= columnsNumber; i++) {
                     if (i > 1) System.out.print(",  ");
                     Object columnValue = res.getObject(i);
-                    System.out.print(columnValue + " " );
+                    System.out.print(res.getMetaData().getColumnName(i) + " " + columnValue);
                 }
-                System.out.println("");
+                System.out.println();
             }
         } catch (SQLException e) {
             e.printStackTrace();

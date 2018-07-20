@@ -1,9 +1,6 @@
 package main.appInterface;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -28,32 +25,15 @@ import java.awt.GridBagLayout;
 
 public class Interface extends JFrame {
 
-	private static GraphicsDevice device = GraphicsEnvironment
-	        .getLocalGraphicsEnvironment().getScreenDevices()[0];
-	
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(() -> {
-            try {
-                new Connector();
-                Interface frame = new Interface();
-                device.setFullScreenWindow(frame);
-                frame.setVisible(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.exit(1);
-            }
-        });
-	}
 
 	/**
 	 * Create the frame.
 	 */
-	private Interface() {
+	Interface() {}
+
+
+	public void init() {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
@@ -64,7 +44,8 @@ public class Interface extends JFrame {
 		setTitle("BBA Innovation Challenge App ");
 		setForeground(Color.WHITE);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		setBounds(100, 100, 923, 575);
+
+		setBounds(100, 100, 950, 550);
 
         JPanel contentPane;
         JTextField txtX;
@@ -150,6 +131,7 @@ public class Interface extends JFrame {
         GeoPosition bogota = new GeoPosition(4.710989, -74.072092);
         mapKit.setZoom(7);
         mapKit.setAddressLocation(bogota);
+
 	}
 
 }

@@ -11,9 +11,18 @@ import static java.lang.System.err;
 public class Connector {
  	
 	private static Connection con = null; //current connection
-	
+
+	/**
+	 * Default constructor connects to application database
+	 */
+	public Connector() {
+		this("jdbc:postgresql://arm-challenge.ckbmr2i1ii7b.eu-west-2.rds.amazonaws.com/ARMChallenge",
+				"guest",
+				"guest");
+	}
+
 	/** Creation of the connection: driver registration + connection*/
- 	public Connector(){
+ 	public Connector(String URL, String user, String passwd){
  		try{
  			//PostGre driver registration
  			System.out.print("Loading PostGRE driver... "); 
@@ -22,11 +31,7 @@ public class Connector {
  			
  			//Connection 
  			System.out.print("Connecting to the database... "); 
- 			String URL = "jdbc:postgresql://arm-challenge.ckbmr2i1ii7b.eu-west-2.rds.amazonaws.com/ARMChallenge";
- 			String USER = "guest";
- 			String PASSWD = "guest";
-
- 			con = DriverManager.getConnection(URL, USER, PASSWD);
+ 			con = DriverManager.getConnection(URL, user, passwd);
  			System.out.println("connected");
 
 			//make autocommit OFF
