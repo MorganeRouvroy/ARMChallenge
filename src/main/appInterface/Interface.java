@@ -15,9 +15,6 @@ import org.jxmapviewer.viewer.TileFactoryInfo;
 
 public class Interface extends JFrame {
 
-	private static GraphicsDevice device = GraphicsEnvironment
-	        .getLocalGraphicsEnvironment().getScreenDevices()[0];
-	
 	private static final long serialVersionUID = 1L;
 
     private JPanel panel;
