@@ -8,12 +8,16 @@ import javafx.stage.Stage;
 
 public class MapApplication extends Application {
 
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("map_view.fxml"));
-        primaryStage.setTitle("BBA Innovation Challenge Application");
+        primaryStage.setTitle("BBA Innovation Challenge App");
         primaryStage.setScene(new Scene(root, 800, 500));
-
         primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }

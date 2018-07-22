@@ -16,7 +16,8 @@
     <FlowPane prefHeight="40" AnchorPane.topAnchor="10.0">
         <Label text="Search for" prefWidth="80"/>
         <!-- Add listener to this -->
-        <ComboBox fx:id="targetCombo" prefWidth="100">
+        <ComboBox fx:id="targetCombo" prefWidth="100"
+                     onAction="#comboAction">
             <items>
                 <FXCollections fx:factory="observableArrayList">
                     <String fx:value="Hospitals"/>
@@ -25,10 +26,12 @@
             </items>
         </ComboBox>
         <Label text="in a range of "/>
-        <TextField fx:id="rangeField" text="10"/>
+        <TextField fx:id="rangeField" text="10"
+                      onAction="#setRangeField"/>
         <Label text="km"/>
         <!-- Add listener to this -->
-        <Button fx:id="findBtn" text="Find"/>
+        <Button fx:id="findBtn" text="Find"
+                   onAction="#searchAction"/>
     </FlowPane>
 
     <!-- Map -->
