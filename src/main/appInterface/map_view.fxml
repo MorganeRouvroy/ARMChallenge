@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="src.main.appInterface.MapController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <!-- FlowPane that contains the top controls -->
+    <FlowPane prefHeight="40" AnchorPane.topAnchor="10.0">
+        <Label text="Search for" prefWidth="80"/>
+        <!-- Add listener to this -->
+        <ComboBox fx:id="targetCombo" prefWidth="100">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="Hospitals"/>
+                    <String fx:value="Schools"/>
+                </FXCollections>
+            </items>
+        </ComboBox>
+        <Label text="in a range of "/>
+        <TextField fx:id="rangeField" text="10"/>
+        <Label text="km"/>
+        <!-- Add listener to this -->
+        <Button fx:id="findBtn" text="Find"/>
+    </FlowPane>
+
+    <!-- Map -->
+</AnchorPane>

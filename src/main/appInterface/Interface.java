@@ -101,6 +101,7 @@ public class Interface extends JFrame {
         JXMapKit mapKit = new JXMapKit();
         mapKit.getZoomSlider().setBackground(UIManager.getColor("Button.light"));
         mapKit.getZoomSlider().setForeground(Color.LIGHT_GRAY);
+
         GridBagLayout gridBagLayout = (GridBagLayout) mapKit.getMainMap().getLayout();
         gridBagLayout.columnWeights = new double[]{1.0, 1.0};
         gridBagLayout.columnWidths = new int[]{618, 10};
@@ -114,7 +115,7 @@ public class Interface extends JFrame {
         DefaultTileFactory tileFactory = new DefaultTileFactory(info);
         mapKit.setTileFactory(tileFactory);
 
-        // Use 8 threads in parallel to load the tiles
+        // Use 20 threads in parallel to load the tiles
         tileFactory.setThreadPoolSize(20);
 
         // Set the focus
