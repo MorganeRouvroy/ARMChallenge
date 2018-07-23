@@ -6,36 +6,36 @@
 <?import javafx.collections.FXCollections?>
 <?import com.lynden.gmapsfx.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="main.appInterface.MapController"
             prefHeight="400.0" prefWidth="600.0">
-    <children>
-        <!-- FlowPane that contains the top controls -->
-        <FlowPane prefHeight="40" AnchorPane.topAnchor="10.0">
-            <Label text="Search for" prefWidth="80"/>
-            <!-- Add listener to this -->
-            <ComboBox fx:id="targetCombo" prefWidth="100"
-                      onAction="#comboAction">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="Hospitals"/>
-                        <String fx:value="Schools"/>
-                    </FXCollections>
-                </items>
-            </ComboBox>
-            <Label text="in a range of "/>
-            <TextField fx:id="rangeField" text="10"
-                       onAction="#setRangeField"/>
-            <Label text="km"/>
-            <!-- Add listener to this -->
-            <Button fx:id="findBtn" text="Find"
-                    onAction="#searchAction"/>
-        </FlowPane>
-
+        <top>
+            <!-- FlowPane that contains the top controls -->
+            <FlowPane prefHeight="40" BorderPane.alignment="CENTER">
+                <Label text="Search for" prefWidth="80"/>
+                <!-- Add listener to this -->
+                <ComboBox fx:id="targetCombo" prefWidth="100"
+                          onAction="#comboAction">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Hospitals"/>
+                            <String fx:value="Schools"/>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+                <Label text="in a range of "/>
+                <TextField fx:id="rangeField" text="10"
+                           onAction="#setRangeField"/>
+                <Label text="km"/>
+                <!-- Add listener to this -->
+                <Button fx:id="findBtn" text="Find"
+                        onAction="#searchAction"/>
+            </FlowPane>
+        </top>
+        <center>
         <!-- Map -->
-        <GoogleMapView fx:id="mapView" layoutX="-311.0" layoutY="-244.0" prefHeight="750.0" prefWidth="761.0"
+        <GoogleMapView fx:id="mapView" layoutX="100.0" layoutY="-100.0" prefHeight="400.0" prefWidth="500.0"
                        AnchorPane.bottomAnchor="5.0"/>
-
-    </children>
-</AnchorPane>
+        </center>
+</BorderPane>

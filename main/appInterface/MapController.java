@@ -1,8 +1,10 @@
 package main.appInterface;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
+import com.lynden.gmapsfx.GoogleMapView;
+import com.lynden.gmapsfx.MapComponentInitializedListener;
+import com.lynden.gmapsfx.javascript.object.GoogleMap;
+import com.lynden.gmapsfx.javascript.object.LatLong;
+import com.lynden.gmapsfx.javascript.object.MapOptions;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,11 +14,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Window;
 
-import com.lynden.gmapsfx.GoogleMapView;
-import com.lynden.gmapsfx.MapComponentInitializedListener;
-import com.lynden.gmapsfx.javascript.object.GoogleMap;
-import com.lynden.gmapsfx.javascript.object.LatLong;
-import com.lynden.gmapsfx.javascript.object.MapOptions;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 public class MapController implements Initializable, MapComponentInitializedListener {
     @FXML
@@ -33,6 +32,7 @@ public class MapController implements Initializable, MapComponentInitializedList
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         mapView.addMapInializedListener(this);
+        findBtn.setDefaultButton(true);
     }
 
     @Override
