@@ -1,5 +1,8 @@
 package test;
-import main.sqlUtils.*;
+
+import main.sqlUtils.Connector;
+import main.sqlUtils.FindNearestHospitalRequest;
+import main.sqlUtils.SchoolsInRadiusRequest;
 import org.junit.Test;
 
 import java.sql.ResultSet;

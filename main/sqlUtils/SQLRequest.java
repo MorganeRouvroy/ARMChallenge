@@ -1,4 +1,4 @@
-package src.main.sqlUtils;
+package main.sqlUtils;
 
 import javax.swing.*;
 import java.sql.*;

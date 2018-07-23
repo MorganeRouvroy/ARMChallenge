@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
+<?import com.lynden.gmapsfx.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="src.main.appInterface.MapController"
+            prefHeight="400.0" prefWidth="600.0">
+    <children>
+        <!-- FlowPane that contains the top controls -->
+        <FlowPane prefHeight="40" AnchorPane.topAnchor="10.0">
+            <Label text="Search for" prefWidth="80"/>
+            <!-- Add listener to this -->
+            <ComboBox fx:id="targetCombo" prefWidth="100"
+                      onAction="#comboAction">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Hospitals"/>
+                        <String fx:value="Schools"/>
+                    </FXCollections>
+                </items>
+            </ComboBox>
+            <Label text="in a range of "/>
+            <TextField fx:id="rangeField" text="10"
+                       onAction="#setRangeField"/>
+            <Label text="km"/>
+            <!-- Add listener to this -->
+            <Button fx:id="findBtn" text="Find"
+                    onAction="#searchAction"/>
+        </FlowPane>
+
+        <!-- Map -->
+        <GoogleMapView fx:id="mapView" layoutX="-311.0" layoutY="-244.0" prefHeight="750.0" prefWidth="761.0"
+                       AnchorPane.bottomAnchor="5.0"/>
+
+    </children>
+</AnchorPane>

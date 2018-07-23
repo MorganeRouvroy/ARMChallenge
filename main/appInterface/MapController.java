@@ -1,20 +1,55 @@
-package src.main.appInterface;
+package main.appInterface;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Window;
 
-public class MapController {
+import com.lynden.gmapsfx.GoogleMapView;
+import com.lynden.gmapsfx.MapComponentInitializedListener;
+import com.lynden.gmapsfx.javascript.object.GoogleMap;
+import com.lynden.gmapsfx.javascript.object.LatLong;
+import com.lynden.gmapsfx.javascript.object.MapOptions;
+
+public class MapController implements Initializable, MapComponentInitializedListener {
     @FXML
     private ComboBox<String> targetCombo;
     @FXML
     private TextField rangeField;
     @FXML
     private Button findBtn;
+    @FXML
+    private GoogleMapView mapView;
+
+    private GoogleMap map;
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        mapView.addMapInializedListener(this);
+    }
+
+    @Override
+    public void mapInitialized() {
+        //Set the initial properties of the map.
+        MapOptions mapOptions = new MapOptions();
+        mapOptions.center(new LatLong(47.6097, -122.3331))
+                .overviewMapControl(false)
+                .panControl(false)
+                .rotateControl(false)
+                .scaleControl(false)
+                .streetViewControl(false)
+                .zoomControl(false)
+                .zoom(12);
+
+        map = mapView.createMap(mapOptions);
+    }
 
     /* Listener for the search button. */
     @FXML
