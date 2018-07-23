@@ -2,9 +2,9 @@ package appInterface;
 
 import com.lynden.gmapsfx.GoogleMapView;
 import com.lynden.gmapsfx.MapComponentInitializedListener;
-import com.lynden.gmapsfx.javascript.object.GoogleMap;
-import com.lynden.gmapsfx.javascript.object.LatLong;
-import com.lynden.gmapsfx.javascript.object.MapOptions;
+import com.lynden.gmapsfx.javascript.object.*;
+import com.lynden.gmapsfx.shapes.Polygon;
+import com.lynden.gmapsfx.shapes.PolygonOptions;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,7 +14,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Window;
-import sqlUtils.SchoolsInRadiusRequest;
+import sqlUtils.NationalCoverageRequest;
+import sqlUtils.SQLRequest;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -62,6 +63,7 @@ public class MapController implements Initializable, MapComponentInitializedList
                     "Please select a unit to search for");
             return;
         }
+        new NationalCoverageRequest(map);
         System.out.println("Where's my map :(");
     }
 
@@ -87,4 +89,5 @@ public class MapController implements Initializable, MapComponentInitializedList
         else
             System.out.println("Where's my map :(");
     }
+
 }

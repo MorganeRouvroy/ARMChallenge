@@ -1,5 +1,11 @@
 package sqlUtils;
 
+import com.lynden.gmapsfx.javascript.object.GoogleMap;
+import com.lynden.gmapsfx.javascript.object.LatLong;
+import com.lynden.gmapsfx.javascript.object.MVCArray;
+import com.lynden.gmapsfx.shapes.Polygon;
+import com.lynden.gmapsfx.shapes.PolygonOptions;
+
 import java.sql.*;
 
 /**
@@ -80,6 +86,5 @@ public class SQLRequest {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 }
