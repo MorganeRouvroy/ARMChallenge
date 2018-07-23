@@ -1,10 +1,11 @@
-package main.appInterface;
+package appInterface;
 
 import com.lynden.gmapsfx.GoogleMapView;
 import com.lynden.gmapsfx.MapComponentInitializedListener;
 import com.lynden.gmapsfx.javascript.object.GoogleMap;
 import com.lynden.gmapsfx.javascript.object.LatLong;
 import com.lynden.gmapsfx.javascript.object.MapOptions;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Window;
+import sqlUtils.SchoolsInRadiusRequest;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -39,7 +41,7 @@ public class MapController implements Initializable, MapComponentInitializedList
     public void mapInitialized() {
         //Set the initial properties of the map.
         MapOptions mapOptions = new MapOptions();
-        mapOptions.center(new LatLong(47.6097, -122.3331))
+        mapOptions.center(new LatLong(4.7109, -74.072))
                 .overviewMapControl(false)
                 .panControl(false)
                 .rotateControl(false)

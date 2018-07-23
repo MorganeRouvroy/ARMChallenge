@@ -1,6 +1,5 @@
-package main.sqlUtils;
+package sqlUtils;
 
-import javax.swing.*;
 import java.sql.*;
 
 /**

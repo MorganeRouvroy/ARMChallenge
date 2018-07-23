@@ -1,4 +1,4 @@
-package main.sqlUtils;
+package sqlUtils;
 import java.sql.*;
 
 import static java.lang.System.err;

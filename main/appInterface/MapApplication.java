@@ -1,10 +1,11 @@
-package main.appInterface;
+package appInterface;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import sqlUtils.Connector;
 
 public class MapApplication extends Application {
 
@@ -20,7 +21,7 @@ public class MapApplication extends Application {
 //        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("map_view.fxml"));
 //        loader.setControllerFactory( c -> new MapController() );
 //        Parent root = loader.load();
-
+        new Connector();
         Parent root = FXMLLoader.load(getClass().getResource("map_view.fxml"));
 
         stage.setTitle("BBA Innovation Challenge Application");
@@ -29,6 +30,10 @@ public class MapApplication extends Application {
         stage.show();
     }
 
+    @Override
+    public void stop(){
+        Connector.closeCon();
+    }
     /**
      * The main() method is ignored in correctly deployed JavaFX application.
      * main() serves only as fallback in case the application can not be
