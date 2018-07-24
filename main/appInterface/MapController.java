@@ -9,22 +9,38 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import main.sqlUtils.FindNearestHospitalRequest;
 import main.sqlUtils.NationalCoverageRequest;
 import main.sqlUtils.SchoolsInRadiusRequest;
+import sun.jvm.hotspot.oops.Mark;
 
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MapController implements Initializable, MapComponentInitializedListener {
+
+    private ArrayList<Marker> schoolMarkers = new ArrayList<>();
+    private ArrayList<Marker> hospitalMarkers = new ArrayList<>();
+    private Circle circle;
+
     @FXML
-    private ComboBox<String> targetCombo;
+    private CheckBox heatMap;
     @FXML
-    private TextField rangeField;
+    private CheckBox hospital;
     @FXML
-    private Button findBtn;
+    private CheckBox school;
+
+    @FXML
+    private Button nearestHospital;
+    @FXML
+    private Button clear;
+
+    @FXML TextField radiusSelection;
+
     @FXML
     private GoogleMapView mapView;
 
@@ -34,9 +50,8 @@ public class MapController implements Initializable, MapComponentInitializedList
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         mapView.addMapInializedListener(this);
-        findBtn.setDefaultButton(true);
         // This beautiful line won't allow any other input than integers
-        rangeField.textProperty().addListener(new appInterface.IntegerOnlyTextListener(rangeField));
+        radiusSelection.textProperty().addListener(new appInterface.IntegerOnlyTextListener(radiusSelection));
     }
 
     @Override
@@ -62,15 +77,12 @@ public class MapController implements Initializable, MapComponentInitializedList
         // When adding a range to the field, you have to press the button in order to proceed
         //TODO(*): Exit function if these fail...
         setRangeField(event);
-        // If there is not selected unit it will pop an alert
-        comboAction(event);
 
         new NationalCoverageRequest(map);
 
         double radius = 2000;
         //Example display of result sets
         FindNearestHospitalRequest request = new FindNearestHospitalRequest(map.getCenter());
-
 
         //Example displaying of result set
         displayResultSet(request.getRequestResult(), true, true);
@@ -84,46 +96,48 @@ public class MapController implements Initializable, MapComponentInitializedList
         displayResultSet(schoolRequest.getRequestResult(), false, false);
         schoolRequest.closeRequest();
 
-
     }
 
-    /* Listener for the comboBox button. */
-    @FXML
-    protected void comboAction(ActionEvent event) {
-        if(targetCombo.getValue().equals("")){
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a unit to search for.", ButtonType.CLOSE);
-            alert.setTitle("No unit selected!");
-            alert.showAndWait();
-        }
-        else
-            System.out.println("Where's my map :(");
-    }
-
-    /* Listener for the comboBox button. */
+    /* Listener for the Text field. */
     @FXML
     protected void setRangeField(ActionEvent event) {
-        int number1 = parseInt(rangeField.getText(),-1);
+        int number1 = parseInt(radiusSelection.getText(),-1);
+        // get a handle to the stage
+        Stage stage = (Stage) heatMap.getScene().getWindow();
 
         if (number1 < 0 || number1 > 50000) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to parse values in the range field.\n" +
                     "Please ensure the values are in the range.", ButtonType.CLOSE);
             alert.setTitle("Wrong input!");
             alert.showAndWait();
+            stage.close();
         }
         else if (number1 == 0) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to parse values in the range field.\n" +
                     "Please ensure the values are not null.", ButtonType.CLOSE);
             alert.setTitle("Failed to parse values");
             alert.showAndWait();
+            stage.close();
         }
         else if (number1 == -1) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to parse values in the range field.\n" +
                     "Please ensure the values are not null.", ButtonType.CLOSE);
             alert.setTitle("Failed to parse values");
             alert.showAndWait();
+            stage.close();
+
         }
         else
             System.out.println("map :(");
+    }
+
+    @FXML
+    protected void clearMap(ActionEvent event) {
+        map.removeMarkers(schoolMarkers);
+        map.removeMarkers(hospitalMarkers);
+
+        if(circle != null)
+            map.removeMapShape(circle);
     }
 
     /**
@@ -133,7 +147,7 @@ public class MapController implements Initializable, MapComponentInitializedList
      * @param valueIfInvalid the returned value if the input is invalid
      * @return the numeric value for the input
      */
-    public static int parseInt(final /*@Nullable*/ String s, final int valueIfInvalid) {
+    protected static int parseInt(final /*@Nullable*/ String s, final int valueIfInvalid) {
         try {
             if (s.equals("")) {
                 return valueIfInvalid;
@@ -150,6 +164,7 @@ public class MapController implements Initializable, MapComponentInitializedList
      * @param latlong: Coordinates of marker
      * @param name: Name of marker
      */
+
     protected void schoolMarker(LatLong latlong, String name){
         //TODO(Basil): Make school/hospital markers look different using MarkerOptions.Icon
         //TODO(Basil): Include some kind of animation/user interaction using MarkerOptions.Animation
@@ -160,6 +175,7 @@ public class MapController implements Initializable, MapComponentInitializedList
                 .title(name);
         Marker marker = new Marker(markerOptions);
         map.addMarker(marker);
+        schoolMarkers.add(marker);
     }
 
     /**
@@ -176,6 +192,7 @@ public class MapController implements Initializable, MapComponentInitializedList
                 .title(name);
         Marker marker = new Marker(markerOptions);
         map.addMarker(marker);
+        hospitalMarkers.add(marker);
     }
 
     /**
@@ -192,9 +209,9 @@ public class MapController implements Initializable, MapComponentInitializedList
                 .fillColor("blue")
                 .fillOpacity(0.2);
 
-        Circle c = new Circle(circleOptions);
+        circle = new Circle(circleOptions);
 
-        map.addMapShape(c);
+        map.addMapShape(circle);
     }
 
     protected void displayResultSet(ResultSet res, Boolean hospital, Boolean recentre){

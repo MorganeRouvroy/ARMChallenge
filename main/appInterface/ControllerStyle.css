@@ -1,0 +1,23 @@
+.root {
+    -fx-background-image: url("background.png");
+}
+.button {
+    -fx-font: 15px "Didot";
+    -fx-font-style: "Bold";
+    -fx-padding: 9;
+
+    -fx-background-color: linear-gradient(#90e5f4, #4477bf);
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+.button:hover {
+    -fx-background-color: linear-gradient(#4477bf, #90e5f4);
+}
+.button:pressed {
+    -fx-background-color: #4477bf;
+}
+.label {
+    -fx-font-size: 17px;
+    -fx-font-family: "Didot";
+    -fx-fill: #6e6e6e;
+    -fx-effect: innershadow( three-pass-box , rgba(66, 36, 49, 0.7), 6, 0.0 , 0 , 2 );
+}
