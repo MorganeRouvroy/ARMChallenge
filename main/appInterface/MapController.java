@@ -200,6 +200,7 @@ public class MapController implements Initializable, MapComponentInitializedList
     protected void displayResultSet(ResultSet res, Boolean hospital, Boolean recentre){
         double avgLong = 0;
         double avgLat = 0;
+        int rowCount = 0;
         try {
             res.beforeFirst();
             while (res.next()) {
@@ -209,6 +210,7 @@ public class MapController implements Initializable, MapComponentInitializedList
                 if(recentre){
                     avgLat += coords.getLatitude();
                     avgLong += coords.getLongitude();
+                    rowCount += 1; //There must be a better way to do this?
                 }
                 if (hospital) {
                     hospitalMarker(coords, res.getString(2));
@@ -218,7 +220,6 @@ public class MapController implements Initializable, MapComponentInitializedList
             }
             if(recentre){
                 //TODO(Set zoom to fit bounding box)
-                int rowCount = res.getRow() + 1;
                 map.setCenter(new LatLong(avgLat/rowCount, avgLong/rowCount));
             }
         } catch (SQLException e) {
