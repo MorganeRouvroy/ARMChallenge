@@ -16,8 +16,6 @@ import main.sqlUtils.SchoolsInRadiusRequest;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class MapController implements Initializable, MapComponentInitializedListener {
@@ -31,8 +29,6 @@ public class MapController implements Initializable, MapComponentInitializedList
     private GoogleMapView mapView;
 
 //    private static LatLong bogota = new LatLong(4.657865, -74.100264);
-    private List<Marker> schoolMarkers = new ArrayList<>();
-    private List<Marker> hospitalMarkers = new ArrayList<>();
     private GoogleMap map;
 
     @Override
@@ -64,6 +60,7 @@ public class MapController implements Initializable, MapComponentInitializedList
     protected void searchAction(ActionEvent event) {
 
         // When adding a range to the field, you have to press the button in order to proceed
+        //TODO(*): Exit function if these fail...
         setRangeField(event);
         // If there is not selected unit it will pop an alert
         comboAction(event);
@@ -159,9 +156,10 @@ public class MapController implements Initializable, MapComponentInitializedList
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latlong)
                 .visible(true)
+                .icon("https://i.imgur.com/CrvqHKb.png")
                 .title(name);
-        schoolMarkers.add(new Marker(markerOptions));
-        map.addMarker(schoolMarkers.get(schoolMarkers.size() - 1));
+        Marker marker = new Marker(markerOptions);
+        map.addMarker(marker);
     }
 
     /**
@@ -173,10 +171,10 @@ public class MapController implements Initializable, MapComponentInitializedList
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latlong)
                 .visible(true)
+                .animation(Animation.DROP)
+                .icon("https://i.imgur.com/D5sCHnA.png")
                 .title(name);
         Marker marker = new Marker(markerOptions);
-//        hospitalMarkers.add(new Marker(markerOptions));
-//        map.addMarker(hospitalMarkers.get(hospitalMarkers.size() - 1));
         map.addMarker(marker);
     }
 
@@ -219,6 +217,7 @@ public class MapController implements Initializable, MapComponentInitializedList
                 }
             }
             if(recentre){
+                //TODO(Set zoom to fit bounding box)
                 int rowCount = res.getRow() + 1;
                 map.setCenter(new LatLong(avgLat/rowCount, avgLong/rowCount));
             }
