@@ -70,18 +70,19 @@ public class MapController implements Initializable, MapComponentInitializedList
         double radius = 2000;
         //Example display of result sets
         FindNearestHospitalRequest request = new FindNearestHospitalRequest(map.getCenter());
+        //Example displaying of hospital
+        //Choose to recentre, but NOT fit - if we fit, it only fits to one point and zooms too much!
+        displayResultSet(request.getRequestResult(), true, true, false);
 
-
-        //Example displaying of result set
-        displayResultSet(request.getRequestResult(), true, true);
-        //Example draw radius
-        drawRadius(map.getCenter(), radius);
+        //Example draw radius - choose to fit here
+        drawRadius(map.getCenter(), radius, true);
         request.closeRequest();
 
         //Add schools in the radius
         SchoolsInRadiusRequest schoolRequest = new SchoolsInRadiusRequest(map.getCenter(), radius);
-        //Do not recentre the map - keep it centred at the hospital
-        displayResultSet(schoolRequest.getRequestResult(), false, false);
+        //Display schools - do not recentre or fit, as all schools/hospitals lie within the radius
+        //which we fit to earlier
+        displayResultSet(schoolRequest.getRequestResult(), false, false, false);
         schoolRequest.closeRequest();
 
 
@@ -183,7 +184,7 @@ public class MapController implements Initializable, MapComponentInitializedList
      * @param latlong
      * @param radius
      */
-    protected void drawRadius(LatLong latlong, double radius){
+    protected void drawRadius(LatLong latlong, double radius, boolean fit){
         CircleOptions circleOptions = new CircleOptions();
         circleOptions.center(latlong)
                 .radius(radius)
@@ -195,32 +196,53 @@ public class MapController implements Initializable, MapComponentInitializedList
         Circle c = new Circle(circleOptions);
 
         map.addMapShape(c);
+
+        if(fit){
+            //Fit map to bounding box
+            LatLongBounds bounds = new LatLongBounds();
+//            bounds.extend(latlong.getDestinationPoint(0.0, radius));
+//            bounds.extend(latlong.getDestinationPoint(180.0, radius));
+            bounds.extend(latlong.getDestinationPoint(90.0, radius));
+            bounds.extend(latlong.getDestinationPoint(270.0, radius));
+            map.fitBounds(bounds);
+        }
     }
 
-    protected void displayResultSet(ResultSet res, Boolean hospital, Boolean recentre){
+    /**
+     * Displays coordinates of a result set
+     * Expect result set with fields {id}, {name}, {lat}, {long}
+     * @param res: The ResultSet
+     * @param hospital: True if displaying hospital, false for school
+     * @param recentre: If True, recentres to middle of points (without zooming)
+     * @param fit: If True, fits map to points (adjust location and zoom
+     * if recentre AND fit true, will only fit.
+     */
+    protected void displayResultSet(ResultSet res, boolean hospital, boolean recentre, boolean fit){
         double avgLong = 0;
         double avgLat = 0;
-        int rowCount = 0;
+        LatLongBounds bounds = new LatLongBounds();
+
         try {
             res.beforeFirst();
-            while (res.next()) {
-                LatLong coords = new LatLong(res.getDouble(3), res.getDouble(4));
+            if(res.isBeforeFirst()) {
+                while (res.next()) {
+                    LatLong coords = new LatLong(res.getDouble(3), res.getDouble(4));
 
-                //If recentering, compute average lat/long for new centre
-                if(recentre){
-                    avgLat += coords.getLatitude();
-                    avgLong += coords.getLongitude();
-                    rowCount += 1; //There must be a better way to do this?
+                    //Keeps bounding box of coordinates
+                    bounds.extend(coords);
+
+                    if (hospital) {
+                        hospitalMarker(coords, res.getString(2));
+                    } else {
+                        schoolMarker(coords, res.getString(2));
+                    }
                 }
-                if (hospital) {
-                    hospitalMarker(coords, res.getString(2));
-                } else {
-                    schoolMarker(coords, res.getString(2));
+                if(fit) {
+                    map.fitBounds(bounds);
+                }else if(recentre){
+                    map.setCenter(new LatLong(0.5*(bounds.getNorthEast().getLatitude() + bounds.getSouthWest().getLatitude()),
+                                            0.5*(bounds.getNorthEast().getLongitude() + bounds.getSouthWest().getLongitude())));
                 }
-            }
-            if(recentre){
-                //TODO(Set zoom to fit bounding box)
-                map.setCenter(new LatLong(avgLat/rowCount, avgLong/rowCount));
             }
         } catch (SQLException e) {
             e.printStackTrace();
