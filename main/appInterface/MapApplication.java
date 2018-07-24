@@ -5,7 +5,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
 import main.sqlUtils.Connector;
+
+import java.awt.*;
 
 public class MapApplication extends Application {
 
@@ -24,6 +27,8 @@ public class MapApplication extends Application {
         new Connector();
         Parent root = FXMLLoader.load(getClass().getResource("map_view.fxml"));
 
+        Image icon = new Image(getClass().getResourceAsStream("icon.png"));
+        stage.getIcons().add(icon);
         stage.setTitle("BBA Innovation Challenge Application");
         stage.setScene(new Scene(root, 800, 500));
 
