@@ -1,9 +1,9 @@
-package sqlUtils;
+package main.sqlUtils;
 
 /**
  * SQL request for getting all the schools in the radius of given position
  */
-public class SchoolsInRadiusRequest extends SQLRequest{
+public class SchoolsInRadiusRequest extends SQLRequest {
     /**
      * Get schools in radius of given position
      * @param clat center latitude

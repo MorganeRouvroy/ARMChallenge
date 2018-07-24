@@ -1,12 +1,9 @@
-package sqlUtils;
+package main.sqlUtils;
 
-import com.lynden.gmapsfx.javascript.object.GoogleMap;
-import com.lynden.gmapsfx.javascript.object.LatLong;
-import com.lynden.gmapsfx.javascript.object.MVCArray;
-import com.lynden.gmapsfx.shapes.Polygon;
-import com.lynden.gmapsfx.shapes.PolygonOptions;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Allow formatting of a request by replacing the ? with the correct options
@@ -31,7 +28,7 @@ public class SQLRequest {
      * @param req the request with ?
      * @param options the options
      */
-    SQLRequest(String req, Object[] options) {
+    public SQLRequest(String req, Object[] options) {
         try{
             Connection con = Connector.getCon();
             stmt = con.prepareStatement(req, res.TYPE_SCROLL_INSENSITIVE, res.CONCUR_UPDATABLE);

@@ -1,4 +1,4 @@
-package sqlUtils;
+package main.sqlUtils;
 
 import com.lynden.gmapsfx.javascript.object.GoogleMap;
 import com.lynden.gmapsfx.javascript.object.LatLong;

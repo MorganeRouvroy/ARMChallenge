@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import main.sqlUtils.NationalCoverageRequest;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -30,7 +31,7 @@ public class MapController implements Initializable, MapComponentInitializedList
         mapView.addMapInializedListener(this);
         findBtn.setDefaultButton(true);
         // This beautiful line won't allow any other input than integers
-        rangeField.textProperty().addListener(new IntegerOnlyTextListener(rangeField));
+        rangeField.textProperty().addListener(new appInterface.IntegerOnlyTextListener(rangeField));
     }
 
     @Override
@@ -57,6 +58,8 @@ public class MapController implements Initializable, MapComponentInitializedList
         setRangeField(event);
         // If there is not selected unit it will pop an alert
         comboAction(event);
+
+        new NationalCoverageRequest(map);
     }
 
     /* Listener for the comboBox button. */
