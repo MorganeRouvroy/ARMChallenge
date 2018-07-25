@@ -9,11 +9,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 import main.sqlUtils.FindNearestHospitalRequest;
 import main.sqlUtils.NationalCoverageRequest;
 import main.sqlUtils.SchoolsInRadiusRequest;
-import sun.jvm.hotspot.oops.Mark;
 
 import java.net.URL;
 import java.sql.ResultSet;
@@ -26,6 +24,7 @@ public class MapController implements Initializable, MapComponentInitializedList
     private ArrayList<Marker> schoolMarkers = new ArrayList<>();
     private ArrayList<Marker> hospitalMarkers = new ArrayList<>();
     private Circle circle;
+    private int number1;
 
     @FXML
     private CheckBox heatMap;
@@ -52,6 +51,7 @@ public class MapController implements Initializable, MapComponentInitializedList
         mapView.addMapInializedListener(this);
         // This beautiful line won't allow any other input than integers
         radiusSelection.textProperty().addListener(new appInterface.IntegerOnlyTextListener(radiusSelection));
+        number1 = parseInt(radiusSelection.getText(), -1);
     }
 
     @Override
@@ -101,34 +101,43 @@ public class MapController implements Initializable, MapComponentInitializedList
     /* Listener for the Text field. */
     @FXML
     protected void setRangeField(ActionEvent event) {
-        int number1 = parseInt(radiusSelection.getText(),-1);
-        // get a handle to the stage
-        Stage stage = (Stage) heatMap.getScene().getWindow();
+
+        // If an error occurs, it exits the app(annying)
+        //Stage stage = (Stage) heatMap.getScene().getWindow();
 
         if (number1 < 0 || number1 > 50000) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to parse values in the range field.\n" +
                     "Please ensure the values are in the range.", ButtonType.CLOSE);
             alert.setTitle("Wrong input!");
             alert.showAndWait();
-            stage.close();
+            //stage.close();
         }
         else if (number1 == 0) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to parse values in the range field.\n" +
                     "Please ensure the values are not null.", ButtonType.CLOSE);
             alert.setTitle("Failed to parse values");
             alert.showAndWait();
-            stage.close();
+            //stage.close();
         }
         else if (number1 == -1) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to parse values in the range field.\n" +
                     "Please ensure the values are not null.", ButtonType.CLOSE);
             alert.setTitle("Failed to parse values");
             alert.showAndWait();
-            stage.close();
+            //stage.close();
 
         }
         else
             System.out.println("map :(");
+    }
+
+    @FXML
+    protected void findSchool(ActionEvent event) {
+        setRangeField(event);
+
+        SchoolsInRadiusRequest schoolRequest = new SchoolsInRadiusRequest(map.getCenter(), number1);
+
+        displayResultSet(schoolRequest.getRequestResult(), false, false);
     }
 
     @FXML

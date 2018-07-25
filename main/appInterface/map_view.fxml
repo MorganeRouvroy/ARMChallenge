@@ -40,7 +40,7 @@
                                           text="Find School"
                                           styleClass="button"
                                           stylesheets="@ControllerStyle.css"
-                                          onAction="#searchAction"/>
+                                          onAction="#findSchool"/>
                             </children>
                         </VBox>
                     </children>
