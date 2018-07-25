@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import main.sqlUtils.FindNearestHospitalRequest;
+import main.sqlUtils.HospitalsInRadiusRequest;
 import main.sqlUtils.NationalCoverageRequest;
 import main.sqlUtils.SchoolsInRadiusRequest;
 
@@ -112,20 +113,20 @@ public class MapController implements Initializable, MapComponentInitializedList
 //
 //        if(radius > 0){
 //            SchoolsInRadiusRequest request = new SchoolsInRadiusRequest(map.getCenter(), radius);
-//            System.out.format("Found %d schools within %.2fkm of %.3f, %.3f", request.resultCount(), radius/1000, map.getCenter().getLatitude(), map.getCenter().getLongitude());
+//            System.out.format("Found %d schools within %.2fkm of %.3f, %.3f%n", request.resultCount(), radius/1000, map.getCenter().getLatitude(), map.getCenter().getLongitude());
 //            displayResultSet(request.getRequestResult(), false, false, false);
-//            drawRadius(map.getCenter(), radius, true);
+//            if(request.resultCount() > 0){drawRadius(map.getCenter(), radius, true);}
 //            request.closeRequest();
 //        }
 
 //        //FIND HOSPITALS WITHIN RADIUS
-//        double radius = setRangeField(event);
+//        double radius = setRangeField(event)*1000;
 //
 //        if(radius > 0){
 //            HospitalsInRadiusRequest request = new HospitalsInRadiusRequest(map.getCenter(), radius);
-//            displayResultSet(request.getRequestResult(), false, false, false);
-//            System.out.format("Found %d hospitals within %.2fkm of %.3f, %.3f", request.resultCount(), radius/1000, map.getCenter().getLatitude(), map.getCenter().getLongitude());
-//            drawRadius(map.getCenter(), radius, true);
+//            displayResultSet(request.getRequestResult(), true, false, false);
+//            System.out.format("Found %d hospitals within %.2fkm of %.3f, %.3f%n", request.resultCount(), radius/1000, map.getCenter().getLatitude(), map.getCenter().getLongitude());
+//            if(request.resultCount() > 0){drawRadius(map.getCenter(), radius, true);}
 //            request.closeRequest();
 //        }
 
@@ -214,8 +215,6 @@ public class MapController implements Initializable, MapComponentInitializedList
      */
 
     protected void schoolMarker(LatLong latlong, String name){
-        //TODO(Basil): Make school/hospital markers look different using MarkerOptions.Icon
-        //TODO(Basil): Include some kind of animation/user interaction using MarkerOptions.Animation
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latlong)
                 .visible(true)
