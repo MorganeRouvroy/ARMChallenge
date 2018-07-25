@@ -18,11 +18,11 @@ import main.sqlUtils.SchoolsInRadiusRequest;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MapController implements Initializable, MapComponentInitializedListener {
-    private Circle circle;
-
+    private ArrayList<Circle> radii = new ArrayList<>();
     @FXML
     private CheckBox heatMap;
     @FXML
@@ -132,8 +132,9 @@ public class MapController implements Initializable, MapComponentInitializedList
     protected void clearMap(ActionEvent event) {
         map.clearMarkers();
 
-        if(circle != null)
-            map.removeMapShape(circle);
+        for (Circle aRadii : radii) {
+            map.removeMapShape(aRadii);
+        }
     }
 
     /**
@@ -205,9 +206,10 @@ public class MapController implements Initializable, MapComponentInitializedList
                 .fillColor("blue")
                 .fillOpacity(0.2);
 
-        circle = new Circle(circleOptions);
+        Circle circle = new Circle(circleOptions);
 
         map.addMapShape(circle);
+        radii.add(circle);
 
         if(fit){
             //Fit map to bounding box
