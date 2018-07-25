@@ -100,8 +100,9 @@ public class MapController implements Initializable, MapComponentInitializedList
     protected void changeHeatmapVisibility (ActionEvent event) {
         if (coverageMap == null){
             coverageMap = new CoverageMap(map);
+        } else {
+            coverageMap.changeVisibility();
         }
-        coverageMap.changeVisibility();
     }
 
     /* Listener for the Text field. */
