@@ -84,4 +84,19 @@ public class SQLRequest {
             e.printStackTrace();
         }
     }
+
+    public int resultCount(){
+
+        int c = 0;
+
+        try{
+            if(res.last()){
+                c = res.getRow();
+                res.beforeFirst();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return c;
+    }
 }

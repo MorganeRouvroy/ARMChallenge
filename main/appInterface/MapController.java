@@ -72,26 +72,65 @@ public class MapController implements Initializable, MapComponentInitializedList
     /* Listener for the search button. */
     @FXML
     protected void searchAction(ActionEvent event) {
+//        // FIND NEAREST HOSPITAL
+//        double radius = setRangeField(event)*1000;
+//
+//        //For clicking schools button
+//        FindNearestHospitalRequest request = new FindNearestHospitalRequest(map.getCenter());
+//
+//        //Display hospital
+//        ResultSet res = request.getRequestResult();
+//
+//        //Get ResultSet info
+//        try {
+//            res.beforeFirst();
+//            res.next();
+//            LatLong coords = new LatLong(res.getDouble(3), res.getDouble(4));
+//            String name = res.getString(2);
+//            System.out.format("Closest hospital was %s at %.3f, %.3f which is %.3fkm away from current location%n", name, coords.getLatitude(), coords.getLongitude(), coords.distanceFrom(map.getCenter())/1000);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        //Display the hospital point
+//        displayResultSet(res, true, true, false);
+//
+//        //Draw radius
+//        drawRadius(map.getCenter(), radius, true);
+//
+//        request.closeRequest();
+//
+//        SchoolsInRadiusRequest schoolRequest = new SchoolsInRadiusRequest(map.getCenter(), radius);
+//        //Do not recentre the map - keep it centred at the hospital
+//        displayResultSet(schoolRequest.getRequestResult(), false, false, false);
+//
+//        System.out.format("Found %d schools within radius of %.2fkm"%n,schoolRequest.resultCount(), radius/1000);
+//        schoolRequest.closeRequest();
 
-        // When adding a range to the field, you have to press the button in order to proceed
-        //TODO(*): Exit function if these fail...
-        setRangeField(event);
+//        //FIND SCHOOLS WITHIN RADIUS
+//        double radius = setRangeField(event)*1000;
+//
+//        if(radius > 0){
+//            SchoolsInRadiusRequest request = new SchoolsInRadiusRequest(map.getCenter(), radius);
+//            System.out.format("Found %d schools within %.2fkm of %.3f, %.3f", request.resultCount(), radius/1000, map.getCenter().getLatitude(), map.getCenter().getLongitude());
+//            displayResultSet(request.getRequestResult(), false, false, false);
+//            drawRadius(map.getCenter(), radius, true);
+//            request.closeRequest();
+//        }
 
-        double radius = 2000;
-        //Example display of result sets
-        FindNearestHospitalRequest request = new FindNearestHospitalRequest(map.getCenter());
+//        //FIND HOSPITALS WITHIN RADIUS
+//        double radius = setRangeField(event);
+//
+//        if(radius > 0){
+//            HospitalsInRadiusRequest request = new HospitalsInRadiusRequest(map.getCenter(), radius);
+//            displayResultSet(request.getRequestResult(), false, false, false);
+//            System.out.format("Found %d hospitals within %.2fkm of %.3f, %.3f", request.resultCount(), radius/1000, map.getCenter().getLatitude(), map.getCenter().getLongitude());
+//            drawRadius(map.getCenter(), radius, true);
+//            request.closeRequest();
+//        }
 
-        //Example displaying of result set
-        displayResultSet(request.getRequestResult(), true, true, false);
-        //Example draw radius
-        drawRadius(map.getCenter(), radius, true);
-        request.closeRequest();
 
-        //Add schools in the radius
-        SchoolsInRadiusRequest schoolRequest = new SchoolsInRadiusRequest(map.getCenter(), radius);
-        //Do not recentre the map - keep it centred at the hospital
-        displayResultSet(schoolRequest.getRequestResult(), false, false, false);
-        schoolRequest.closeRequest();
+
 
     }
 
@@ -107,35 +146,37 @@ public class MapController implements Initializable, MapComponentInitializedList
 
     /* Listener for the Text field. */
     @FXML
-    protected void setRangeField(ActionEvent event) {
-        int number1 = parseInt(radiusSelection.getText(),-1);
+    protected double setRangeField(ActionEvent event) {
+        int radius = parseInt(radiusSelection.getText(),-1);
         // get a handle to the stage
         Stage stage = (Stage) heatMap.getScene().getWindow();
 
-        if (number1 < 0 || number1 > 50000) {
+        if (radius < 0 || radius > 50000) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to parse values in the range field.\n" +
                     "Please ensure the values are in the range.", ButtonType.CLOSE);
             alert.setTitle("Wrong input!");
             alert.showAndWait();
             stage.close();
+            radius = -1;
         }
-        else if (number1 == 0) {
+        else if (radius == 0) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to parse values in the range field.\n" +
                     "Please ensure the values are not null.", ButtonType.CLOSE);
             alert.setTitle("Failed to parse values");
             alert.showAndWait();
             stage.close();
+            radius = -1;
         }
-        else if (number1 == -1) {
+        else if (radius == -1) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to parse values in the range field.\n" +
                     "Please ensure the values are not null.", ButtonType.CLOSE);
             alert.setTitle("Failed to parse values");
             alert.showAndWait();
             stage.close();
+            radius = -1;
 
         }
-        else
-            System.out.println("map :(");
+        return radius;
     }
 
     @FXML
