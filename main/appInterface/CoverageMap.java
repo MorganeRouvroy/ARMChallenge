@@ -28,7 +28,7 @@ public class CoverageMap {
             NationalCoverageRequest request = new NationalCoverageRequest(name);
             ResultSet res = request.getRequestResult();
             String color = extractColor(res);
-            Object[] path = convertToLatLong(res);
+            MVCArray path = convertToLatLong(res);
             drawPolygon(map, path, color);
             request.closeRequest();
         }
@@ -58,21 +58,21 @@ public class CoverageMap {
         }
     }
 
-    private Object[] convertToLatLong(ResultSet res) {
-        ArrayList<LatLong> list = new ArrayList<>();
+    private MVCArray convertToLatLong(ResultSet res) {
+        MVCArray list = new MVCArray();
         try {
             while (res.next()) {
                 double lon = res.getDouble(1);
                 double lat = res.getDouble(2);
-                list.add(new LatLong(lat, lon));
+                list.push(new LatLong(lat, lon));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return list.toArray();
+        return list;
     }
 
-    private void drawPolygon(GoogleMap map, Object[] path, String color) {
+    private void drawPolygon(GoogleMap map, MVCArray path, String color) {
         PolygonOptions options = new PolygonOptions();
         options.clickable(false)
                 .draggable(false)
@@ -82,7 +82,7 @@ public class CoverageMap {
                 .fillColor(color)
                 .fillOpacity(0.2)
                 .visible(true)
-                .paths(new MVCArray(path));
+                .paths(path);
 
         Polygon polygon = new Polygon(options);
         map.addMapShape(polygon);
