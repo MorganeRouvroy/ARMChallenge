@@ -1,78 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?scenebuilder-stylesheet ControllerStyle.css?>
-
 <?import com.lynden.gmapsfx.GoogleMapView?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="main.appInterface.MapController"
-            stylesheets="@ControllerStyle.css"
-            prefHeight="400.0" prefWidth="700.0">
+<BorderPane prefHeight="400.0" prefWidth="700.0" stylesheets="@ControllerStyle.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.appInterface.MapController">
     <left>
-        <VBox spacing="35" alignment="CENTER" prefWidth="300">
+        <VBox alignment="CENTER" prefWidth="300" spacing="35">
             <children>
-                <Button fx:id="nearestHospital"
-                        text="Find Nearest Hospital"
-                        styleClass="button"
-                        stylesheets="@ControllerStyle.css"
-                        onAction="#searchAction"/>
+                <Button fx:id="nearestHospital" onAction="#searchAction" styleClass="button" stylesheets="@ControllerStyle.css" text="Find Nearest Hospital" />
                 <HBox alignment="CENTER">
                     <children>
-                        <TextField fx:id="radiusSelection"
-                                   promptText="Choose a radius"
-                                   prefWidth="150" prefHeight="80"
-                                   styleClass="label"
-                                   stylesheets="@ControllerStyle.css"
-                                   onAction="#setRangeField"/>
+                        <TextField fx:id="radiusSelection" onAction="#setRangeField" prefHeight="80" prefWidth="150" promptText="Choose a radius" styleClass="label" stylesheets="@ControllerStyle.css" />
                         <VBox alignment="CENTER">
                             <children>
-                                <CheckBox fx:id="hospital"
-                                          text="Find Hospital" prefWidth="140"
-                                          textAlignment="CENTER"
-                                          styleClass="button"
-                                          stylesheets="@ControllerStyle.css"
-                                          onAction="#searchAction"/>
-                                <CheckBox fx:id="school" prefWidth="140"
-                                          text="Find School"
-                                          styleClass="button"
-                                          stylesheets="@ControllerStyle.css"
-                                          onAction="#searchAction"/>
+                                <CheckBox fx:id="hospital" onAction="#searchAction" prefWidth="140" styleClass="button" stylesheets="@ControllerStyle.css" text="Find Hospital" textAlignment="CENTER" />
+                                <CheckBox fx:id="school" onAction="#searchAction" prefWidth="140" styleClass="button" stylesheets="@ControllerStyle.css" text="Find School" />
                             </children>
                         </VBox>
                     </children>
                 </HBox>
-                <CheckBox fx:id="heatMap"
-                          styleClass="button"
-                          stylesheets="@ControllerStyle.css"
-                          text="HeatMap" />
-                <Button fx:id="Clear"
-                        text="Clear Map"
-                        styleClass="button"
-                        stylesheets="@ControllerStyle.css"
-                        onAction="#clearMap"/>
+                <CheckBox fx:id="heatMap" onAction="#changeHeatmapVisibility" styleClass="button" stylesheets="@ControllerStyle.css" text="HeatMap" />
+                <Button fx:id="Clear" onAction="#clearMap" styleClass="button" stylesheets="@ControllerStyle.css" text="Clear Map" />
             </children>
         </VBox>
     </left>
     <center>
         <!-- Map -->
-        <GoogleMapView fx:id="mapView"
-                       layoutX="100.0"
-                       layoutY="-100.0"
-                       prefHeight="400.0" prefWidth="500.0"
-                       AnchorPane.bottomAnchor="5.0"/>
+        <GoogleMapView fx:id="mapView" layoutX="100.0" layoutY="-100.0" prefHeight="400.0" prefWidth="500.0" AnchorPane.bottomAnchor="5.0" />
     </center>
     <bottom>
-        <TextField
-                fx:id="something"
-                text="Display information"
-                alignment="CENTER"
-                styleClass="label"
-                stylesheets="@ControllerStyle.css"
-                onAction="#setRangeField">
+        <TextField fx:id="something" alignment="CENTER" onAction="#setRangeField" styleClass="label" stylesheets="@ControllerStyle.css" text="Display information">
         </TextField>
     </bottom>
 </BorderPane>

@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 import main.sqlUtils.FindNearestHospitalRequest;
 import main.sqlUtils.NationalCoverageRequest;
 import main.sqlUtils.SchoolsInRadiusRequest;
-//import sun.jvm.hotspot.oops.Mark;
+
 
 import java.net.URL;
 import java.sql.ResultSet;
@@ -23,6 +23,8 @@ import java.util.ResourceBundle;
 
 public class MapController implements Initializable, MapComponentInitializedListener {
     private ArrayList<Circle> radii = new ArrayList<>();
+    private CoverageMap coverageMap;
+
     @FXML
     private CheckBox heatMap;
     @FXML
@@ -75,8 +77,6 @@ public class MapController implements Initializable, MapComponentInitializedList
         //TODO(*): Exit function if these fail...
         setRangeField(event);
 
-        new NationalCoverageRequest(map);
-
         double radius = 2000;
         //Example display of result sets
         FindNearestHospitalRequest request = new FindNearestHospitalRequest(map.getCenter());
@@ -93,6 +93,15 @@ public class MapController implements Initializable, MapComponentInitializedList
         displayResultSet(schoolRequest.getRequestResult(), false, false, false);
         schoolRequest.closeRequest();
 
+    }
+
+    /* Listener for the heatmap checkbox. */
+    @FXML
+    protected void changeHeatmapVisibility (ActionEvent event) {
+        if (coverageMap == null){
+            coverageMap = new CoverageMap(map);
+        }
+        coverageMap.changeVisibility();
     }
 
     /* Listener for the Text field. */
