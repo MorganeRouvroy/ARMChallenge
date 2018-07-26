@@ -32,18 +32,20 @@ public class CoverageMap {
             String color = extractColor(res);
             MVCArray path = convertToLatLong(res);
             LatLong centre = new LatLong(0.0, 0.0);
+            double avgDist = -1;
             double score = -1;
             try {
                 res.beforeFirst();
                 res.next();
                 centre = new LatLong(res.getDouble(4), res.getDouble(5));
+                avgDist = res.getDouble(6);
                 score = res.getDouble(3);
                 System.out.format("Polygon centre is %.2f, %.2f%n", centre.getLatitude(), centre.getLongitude());
                 res.isBeforeFirst();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            drawPolygon(map, path, color, name, centre, score);
+            drawPolygon(map, path, color, name, centre, avgDist);
             request.closeRequest();
         }
     }
@@ -92,7 +94,7 @@ public class CoverageMap {
                 .draggable(false)
                 .editable(false)
                 .strokeColor(color)
-                .strokeWeight(0.4)
+                .strokeWeight(1)
                 .fillColor(color)
                 .fillOpacity(0.2)
                 .visible(true)
@@ -112,10 +114,15 @@ public class CoverageMap {
 //        LatLong centre = new LatLong(0.5*(SW.getLatitude() + NE.getLatitude()), 0.5*(SW.getLongitude() + SW.getLongitude()));
 //        LatLong centre = new LatLong(0.0,0.0);
         InfoWindowOptions infOpt = new InfoWindowOptions();
-        infOpt.content(name + " score: " + score)
-              .position(centre)
-              .disableAutoPan(true);
-
+        if(score < 0) {
+            infOpt.content(name + " <br/> No schools found")
+                    .position(centre)
+                    .disableAutoPan(true);
+        } else {
+            infOpt.content(name + " <br/> Average distance from schools to nearest hospital: " + Math.round(score*100)/100.0 +"km")
+                    .position(centre)
+                    .disableAutoPan(true);
+        }
         InfoWindow inf = new InfoWindow(infOpt);
         map.addUIEventHandler(polygon, UIEventType.click, (JSObject obj) -> inf.open(map));
 
