@@ -1,34 +1,4 @@
 /*
-.root {
-    -fx-background-color: #ffffff;
- }
-.left {
-    -fx-background-image: url("background.png");
-}
-
-.button {
-    -fx-font: 15px "Didot";
-    -fx-font-style: "Bold";
-    -fx-padding: 9;
-
-    -fx-background-color: linear-gradient(#90e5f4, #4477bf);
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
-}
-.button:hover {
-    -fx-background-color: linear-gradient(#4477bf, #90e5f4);
-}
-.button:pressed {
-    -fx-background-color: #4477bf;
-}
-.label {
-    -fx-font-size: 17px;
-    -fx-font-family: "Didot";
-    -fx-fill: #6e6e6e;
-    -fx-effect: innershadow( three-pass-box , rgba(66, 36, 49, 0.7), 6, 0.0 , 0 , 2 );
-}
-*/
-
-/*
  * The MIT License (MIT)
  *
  * Copyright (c) 2015 - AGIX | Innovative Engineering
@@ -147,11 +117,6 @@
     -fx-padding: 0.7em;
     -fx-alignment: CENTER;
 }
-/*
-.button-raised .button .text, .button-flat .button .text {
-    -fx-text-weight: Bold;
-}
-*/
 
 .button:default {
     -fx-background-color: -swatch-500;
@@ -428,71 +393,3 @@
 .text-area:focused, .text-field:focused {
     -fx-border-color: -swatch-500;
 }
-
-/*******************************************************************************
- *                                                                             *
- * Tool bar	& Menu bar		                       			  				   *
- *                                                                             *
- ******************************************************************************/
-.tool-bar, .menu-bar { /* top */
-    -fx-background-color: -swatch-toolbar;
-    -fx-border-width: 0 0 2 0;
-    -fx-border-color: -swatch-grey;
-    -fx-min-height: 48;
-    -fx-alignment: CENTER_LEFT;
-}
-
-.tool-bar .label {
-    -fx-font-size: 18;
-}
-
-.tool-bar .combo-box-base, .menu-bar .combo-base {
-    -fx-border-width: 0;
-}
-
-.tool-bar .button, .tool-bar .toggle-button {
-    -fx-background-color: -swatch-toolbar;
-    -fx-text-fill: -fx-text-base-color;
-    -fx-pref-height: 42;
-    -fx-pref-width: 42;
-    -fx-min-height: 42;
-    -fx-min-width: 42;
-    -fx-padding: 0;
-    -fx-background-radius: 0;
-}
-
-.tool-bar .button:pressed, .tool-bar .toggle-button:pressed, .tool-bar .toggle-button:selected
-{
-    -fx-background-color: -swatch-grey;
-}
-
-.tool-bar .toggle-button {
-    -fx-background-color: -swatch-toolbar;
-}
-
-.tool-bar .separator {
-    -fx-padding: 5 10 5 10;
-}
-
-.toolbar-colored {
-    -fx-background-color: -swatch-500;
-    -fx-border-width: 0 0 2 0;
-    -fx-border-color: -swatch-grey;
-}
-
-.toolbar-colored .button, .toolbar-colored .toggle-button {
-    -fx-background-color: -swatch-500;
-    -fx-text-fill: white;
-}
-
-.toolbar-colored .button:pressed, .toolbar-colored .toggle-button:pressed,
-.toolbar-colored .toggle-button:selected {
-    -fx-background-color: -swatch-200;
-}
-
-.toolbar-colored .text {
-    -fx-fill: white;
-}
-
-
-

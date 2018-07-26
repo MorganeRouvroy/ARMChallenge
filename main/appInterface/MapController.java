@@ -60,6 +60,8 @@ public class MapController implements Initializable, MapComponentInitializedList
     private TextField latitude;
     @FXML
     private TextField longitude;
+    @FXML
+    private Label display;
 
     @FXML
     private GoogleMapView mapView;
@@ -70,14 +72,14 @@ public class MapController implements Initializable, MapComponentInitializedList
     Image one = new Image(getClass().getResourceAsStream("1.png"));
     Image two = new Image(getClass().getResourceAsStream("2.png"));
 
-    //private DoubleProperty splitPaneDividerPosition = SplitPane.getDividers().get(0).positionProperty();
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         mapView.addMapInializedListener(this);
+
         // This beautiful line won't allow any other input than integers
         radiusSelection.textProperty().addListener(new appInterface.IntegerOnlyTextListener(radiusSelection));
 
+        //The collapsing button has to be initialised here
         showHide.setGraphic(new ImageView(two));
         showHide();
     }
@@ -109,7 +111,7 @@ public class MapController implements Initializable, MapComponentInitializedList
                 ControlPane.setManaged(false);
                 showHide.setGraphic(new ImageView(one));
             } else {
-                SplitPane.getDividers().get(0).setPosition(0.4);
+                SplitPane.getDividers().get(0).setPosition(0.3);
                 ControlPane.setVisible(true);
                 ControlPane.setManaged(true);
                 showHide.setGraphic(new ImageView(two));
@@ -117,70 +119,65 @@ public class MapController implements Initializable, MapComponentInitializedList
         });
     }
 
-    /* Listener for the search button. */
     @FXML
-    protected void searchAction(ActionEvent event) {
-//        // FIND NEAREST HOSPITAL
-//        double radius = setRangeField(event)*1000;
-//
-//        //For clicking schools button
-//        FindNearestHospitalRequest request = new FindNearestHospitalRequest(map.getCenter());
-//
-//        //Display hospital
-//        ResultSet res = request.getRequestResult();
-//
-//        //Get ResultSet info
-//        try {
-//            res.beforeFirst();
-//            res.next();
-//            LatLong coords = new LatLong(res.getDouble(3), res.getDouble(4));
-//            String name = res.getString(2);
-//            System.out.format("Closest hospital was %s at %.3f, %.3f which is %.3fkm away from current location%n", name, coords.getLatitude(), coords.getLongitude(), coords.distanceFrom(map.getCenter())/1000);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//
-//        //Display the hospital point
-//        displayResultSet(res, true, true, false);
-//
-//        //Draw radius
-//        drawRadius(map.getCenter(), radius, true);
-//
-//        request.closeRequest();
-//
-//        SchoolsInRadiusRequest schoolRequest = new SchoolsInRadiusRequest(map.getCenter(), radius);
-//        //Do not recentre the map - keep it centred at the hospital
-//        displayResultSet(schoolRequest.getRequestResult(), false, false, false);
-//
-//        System.out.format("Found %d schools within radius of %.2fkm%n",schoolRequest.resultCount(), radius/1000);
-//        schoolRequest.closeRequest();
-
-//        //FIND SCHOOLS WITHIN RADIUS
-//        double radius = setRangeField(event)*1000;
-//
-//        if(radius > 0){
-//            SchoolsInRadiusRequest request = new SchoolsInRadiusRequest(map.getCenter(), radius);
-//            System.out.format("Found %d schools within %.2fkm of %.3f, %.3f%n", request.resultCount(), radius/1000, map.getCenter().getLatitude(), map.getCenter().getLongitude());
-//            displayResultSet(request.getRequestResult(), false, false, false);
-//            if(request.resultCount() > 0){drawRadius(map.getCenter(), radius, true);}
-//            request.closeRequest();
-//        }
-
-//        //FIND HOSPITALS WITHIN RADIUS
-//        double radius = setRangeField(event)*1000;
-//
-//        if(radius > 0){
-//            HospitalsInRadiusRequest request = new HospitalsInRadiusRequest(map.getCenter(), radius);
-//            displayResultSet(request.getRequestResult(), true, false, false);
-//            System.out.format("Found %d hospitals within %.2fkm of %.3f, %.3f%n", request.resultCount(), radius/1000, map.getCenter().getLatitude(), map.getCenter().getLongitude());
-//            if(request.resultCount() > 0){drawRadius(map.getCenter(), radius, true);}
-//            request.closeRequest();
-//        }
+    protected void nearestHospital (ActionEvent event) {
 
 
+
+        //For clicking schools button
+        FindNearestHospitalRequest request = new FindNearestHospitalRequest(map.getCenter());
+
+        //Display hospital
+        ResultSet res = request.getRequestResult();
+
+        //Get ResultSet info
+        try {
+            res.beforeFirst();
+            res.next();
+            LatLong coords = new LatLong(res.getDouble(3), res.getDouble(4));
+            String name = res.getString(2);
+
+            display.setText(String.format("Closest hospital was %s at %.3f, %.3f which is %.3fkm away from current location%n", name, coords.getLatitude(), coords.getLongitude(), coords.distanceFrom(map.getCenter())/1000));
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        //Display the hospital point
+        displayResultSet(res, true, true, false);
 
 
     }
+
+    @FXML
+    protected void findSchool (ActionEvent event) {
+        double radius = setRangeField(event)*1000;
+
+        if(radius > 0){
+            SchoolsInRadiusRequest request = new SchoolsInRadiusRequest(map.getCenter(), radius);
+
+            display.setText(String.format("Found %d schools within %.2fkm of %.3f, %.3f%n", request.resultCount(), radius/1000, map.getCenter().getLatitude(), map.getCenter().getLongitude()));
+
+            displayResultSet(request.getRequestResult(), false, false, false);
+            if(request.resultCount() > 0){drawRadius(map.getCenter(), radius, true);}
+            request.closeRequest();
+        }
+    }
+
+    @FXML
+    protected void findHospital (ActionEvent event) {
+        double radius = setRangeField(event)*1000;
+        if(radius > 0){
+            HospitalsInRadiusRequest request = new HospitalsInRadiusRequest(map.getCenter(), radius);
+            displayResultSet(request.getRequestResult(), true, false, false);
+
+            display.setText(String.format("Found %d hospitals within %.2fkm of %.3f, %.3f%n", request.resultCount(), radius/1000, map.getCenter().getLatitude(), map.getCenter().getLongitude()));
+
+            if(request.resultCount() > 0){drawRadius(map.getCenter(), radius, true);}
+            request.closeRequest();
+        }
+    }
+
 
     /* Listener for the heatmap checkbox. */
     @FXML
@@ -196,15 +193,13 @@ public class MapController implements Initializable, MapComponentInitializedList
     @FXML
     protected double setRangeField(ActionEvent event) {
         int radius = parseInt(radiusSelection.getText(),-1);
-        // get a handle to the stage
-        Stage stage = (Stage) heatMap.getScene().getWindow();
 
         if (radius < 0 || radius > 50000) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to parse values in the range field.\n" +
                     "Please ensure the values are in the range.", ButtonType.CLOSE);
             alert.setTitle("Wrong input!");
+            System.out.println("Bye");
             alert.showAndWait();
-            stage.close();
             radius = -1;
         }
         else if (radius == 0) {
@@ -212,17 +207,7 @@ public class MapController implements Initializable, MapComponentInitializedList
                     "Please ensure the values are not null.", ButtonType.CLOSE);
             alert.setTitle("Failed to parse values");
             alert.showAndWait();
-            stage.close();
             radius = -1;
-        }
-        else if (radius == -1) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to parse values in the range field.\n" +
-                    "Please ensure the values are not null.", ButtonType.CLOSE);
-            alert.setTitle("Failed to parse values");
-            alert.showAndWait();
-            stage.close();
-            radius = -1;
-
         }
         return radius;
     }
@@ -269,7 +254,6 @@ public class MapController implements Initializable, MapComponentInitializedList
                 .title(name);
         Marker marker = new Marker(markerOptions);
         map.addMarker(marker);
-//        schoolMarkers.add(marker);
     }
 
     /**
@@ -286,7 +270,6 @@ public class MapController implements Initializable, MapComponentInitializedList
                 .title(name);
         Marker marker = new Marker(markerOptions);
         map.addMarker(marker);
-//        hospitalMarkers.add(marker);
     }
 
     /**
