@@ -1,11 +1,12 @@
 package main.appInterface;
 
-import com.lynden.gmapsfx.javascript.object.GoogleMap;
-import com.lynden.gmapsfx.javascript.object.LatLong;
-import com.lynden.gmapsfx.javascript.object.MVCArray;
+import com.lynden.gmapsfx.javascript.event.UIEventType;
+import com.lynden.gmapsfx.javascript.object.*;
 import com.lynden.gmapsfx.shapes.Polygon;
 import com.lynden.gmapsfx.shapes.PolygonOptions;
 import main.sqlUtils.NationalCoverageRequest;
+import netscape.javascript.JSObject;
+import org.w3c.dom.events.UIEvent;
 
 
 import java.sql.ResultSet;
@@ -15,7 +16,8 @@ import java.util.ArrayList;
 public class CoverageMap {
 
     private ArrayList<Polygon> polygons = new ArrayList<>();
-
+    private ArrayList<InfoWindow> infs = new ArrayList<>();
+    private boolean infsOpen;
     CoverageMap(GoogleMap map) {
 
         String[] stateList = {"Arauca", "Sucre", "Caquetá", "Magdalena", "Risaralda", "Chocó", "Cauca",
@@ -29,7 +31,19 @@ public class CoverageMap {
             ResultSet res = request.getRequestResult();
             String color = extractColor(res);
             MVCArray path = convertToLatLong(res);
-            drawPolygon(map, path, color);
+            LatLong centre = new LatLong(0.0, 0.0);
+            double score = -1;
+            try {
+                res.beforeFirst();
+                res.next();
+                centre = new LatLong(res.getDouble(4), res.getDouble(5));
+                score = res.getDouble(3);
+                System.out.format("Polygon centre is %.2f, %.2f%n", centre.getLatitude(), centre.getLongitude());
+                res.isBeforeFirst();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            drawPolygon(map, path, color, name, centre, score);
             request.closeRequest();
         }
     }
@@ -72,9 +86,9 @@ public class CoverageMap {
         return list;
     }
 
-    private void drawPolygon(GoogleMap map, MVCArray path, String color) {
+    private void drawPolygon(GoogleMap map, MVCArray path, String color, String name, LatLong centre, double score) {
         PolygonOptions options = new PolygonOptions();
-        options.clickable(false)
+        options.clickable(true)
                 .draggable(false)
                 .editable(false)
                 .strokeColor(color)
@@ -82,16 +96,45 @@ public class CoverageMap {
                 .fillColor(color)
                 .fillOpacity(0.2)
                 .visible(true)
-                .paths(path);
+                .paths(path)
+                .zIndex(-10);
 
         Polygon polygon = new Polygon(options);
+        polygon.setDraggable(false);
         map.addMapShape(polygon);
+
+        //INFO WINDOW
+        //GET POLYGON CENTRE
+//        LatLongBounds bnds = polygon.getBounds();
+//        System.out.println(bnds.toString());
+//        LatLong SW = bnds.getSouthWest();
+//        LatLong NE = bnds.getNorthEast();
+//        LatLong centre = new LatLong(0.5*(SW.getLatitude() + NE.getLatitude()), 0.5*(SW.getLongitude() + SW.getLongitude()));
+//        LatLong centre = new LatLong(0.0,0.0);
+        InfoWindowOptions infOpt = new InfoWindowOptions();
+        infOpt.content(name + " score: " + score)
+              .position(centre)
+              .disableAutoPan(true);
+
+        InfoWindow inf = new InfoWindow(infOpt);
+        map.addUIEventHandler(polygon, UIEventType.click, (JSObject obj) -> inf.open(map));
+
         polygons.add(polygon);
+        infs.add(inf);
+        infsOpen = true;
     }
 
-    public void changeVisibility() {
+    void changeVisibility() {
         for(Polygon poly : polygons) {
             poly.setVisible(! poly.getVisible());
+        }
+        if(infsOpen) {
+            for (InfoWindow inf : infs) {
+                inf.close();
+            }
+            infsOpen = false;
+        }else{
+            infsOpen = true;
         }
     }
 }

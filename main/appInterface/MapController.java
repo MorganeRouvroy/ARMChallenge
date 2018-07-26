@@ -105,7 +105,7 @@ public class MapController implements Initializable, MapComponentInitializedList
 //        //Do not recentre the map - keep it centred at the hospital
 //        displayResultSet(schoolRequest.getRequestResult(), false, false, false);
 //
-//        System.out.format("Found %d schools within radius of %.2fkm"%n,schoolRequest.resultCount(), radius/1000);
+//        System.out.format("Found %d schools within radius of %.2fkm%n",schoolRequest.resultCount(), radius/1000);
 //        schoolRequest.closeRequest();
 
 //        //FIND SCHOOLS WITHIN RADIUS
