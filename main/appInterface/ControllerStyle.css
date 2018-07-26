@@ -351,26 +351,6 @@
     -fx-prompt-text-fill: derive(-dark, 50.0%);
     -fx-highlight-fill: rgb(94.0, 203.0, 234.0);
 }
-.latitude {
-    -fx-background-color: transparent;
-    -fx-background-radius: 3.0;
-    -fx-padding: 5px;
-    -fx-border-color: -swatch-grey;
-    -fx-border-width: 0 0 2 0;
-    -fx-prompt-text-fill: derive(-dark, 50.0%);
-    -fx-highlight-fill: rgb(94.0, 203.0, 234.0);
-}
-
-.longitude {
-    -fx-background-color: transparent;
-    -fx-background-radius: 3.0;
-    -fx-padding: 5px;
-    -fx-border-color: -swatch-grey;
-    -fx-border-width: 0 0 2 0;
-    -fx-prompt-text-fill: derive(-dark, 50.0%);
-    -fx-highlight-fill: rgb(94.0, 203.0, 234.0);
-}
-
 .text-area .text, .text-field>*>.text {
     -fx-effect: null;
     -fx-fill: -dark;

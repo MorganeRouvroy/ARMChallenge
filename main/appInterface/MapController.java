@@ -35,8 +35,11 @@ public class MapController implements Initializable, MapComponentInitializedList
     @FXML
     private CheckBox heatMap;
 
+
     @FXML
     private SplitPane SplitPane = new SplitPane();
+    @FXML
+    private ScrollPane scrollPane;
     @FXML
     private VBox ControlPane = new VBox();
     @FXML
@@ -51,15 +54,15 @@ public class MapController implements Initializable, MapComponentInitializedList
     @FXML
     private Button clear;
     @FXML
+    private Button search;
+    @FXML
     private ToggleButton showHide;
 
 
     @FXML
     private TextField radiusSelection;
     @FXML
-    private TextField latitude;
-    @FXML
-    private TextField longitude;
+    private TextField location;
     @FXML
     private Label display;
 
@@ -102,6 +105,11 @@ public class MapController implements Initializable, MapComponentInitializedList
     }
 
     @FXML
+    protected void searchForLocation() {
+
+    }
+
+    @FXML
     protected void showHide() {
         showHide.setOnAction(event -> {
             if (showHide.isSelected()) {
@@ -109,11 +117,13 @@ public class MapController implements Initializable, MapComponentInitializedList
                 show.setMaxWidth(0.1);
                 ControlPane.setVisible(false);
                 ControlPane.setManaged(false);
+                scrollPane.setManaged(false);
                 showHide.setGraphic(new ImageView(one));
             } else {
                 SplitPane.getDividers().get(0).setPosition(0.3);
                 ControlPane.setVisible(true);
                 ControlPane.setManaged(true);
+                scrollPane.setManaged(true);
                 showHide.setGraphic(new ImageView(two));
             }
         });
@@ -219,6 +229,9 @@ public class MapController implements Initializable, MapComponentInitializedList
         for (Circle aRadii : radii) {
             map.removeMapShape(aRadii);
         }
+
+        //clear the bottom label
+        display.setText("");
     }
 
     /**

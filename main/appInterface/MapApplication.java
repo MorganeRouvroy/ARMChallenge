@@ -40,7 +40,7 @@ public class MapApplication extends Application {
 
         stage.getIcons().add(icon);
         stage.setTitle("BBA Innovation Challenge Application");
-        stage.setScene(new Scene(root, 1000, 760));
+        stage.setScene(new Scene(root, 1000, 700));
 
         stage.show();
     }

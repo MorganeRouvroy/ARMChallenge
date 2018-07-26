@@ -10,9 +10,13 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.ScrollPane?>
 <BorderPane prefHeight="500.0" prefWidth="800.0" stylesheets="@ControllerStyle.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.appInterface.MapController">
     <center>
         <HBox>
@@ -22,32 +26,68 @@
                 </VBox>
                 <SplitPane fx:id="SplitPane" dividerPositions="0.3" orientation="HORIZONTAL" HBox.hgrow="ALWAYS">
                     <items>
-                        <VBox fx:id="ControlPane" alignment="CENTER" prefWidth="300" spacing="35" stylesheets="@ControllerStyle.css">
-                            <children>
-                                <Button fx:id="nearestHospital" onAction="#nearestHospital" styleClass="button-raised" stylesheets="@ControllerStyle.css" text="Find Nearest Hospital" />
-                                <Separator prefWidth="200.0" />
-                                <TextField fx:id="radiusSelection" alignment="CENTER" onAction="#setRangeField" prefHeight="80" prefWidth="150" promptText="Choose a radius" styleClass="text-field, text-area" stylesheets="@ControllerStyle.css" />
-                                <VBox alignment="CENTER">
+
+                        <ScrollPane fx:id="scrollPane" HBox.hgrow="ALWAYS">
+                            <content>
+                                <VBox fx:id="ControlPane" alignment="CENTER" prefWidth="300" spacing="35" stylesheets="@ControllerStyle.css">
                                     <children>
-                                        <Button fx:id="hospital" onAction="#findHospital" prefWidth="140" styleClass="button-raised" stylesheets="@ControllerStyle.css" text="Find Hospital" textAlignment="CENTER" />
-                                        <Button fx:id="school" onAction="#findSchool" prefWidth="140" styleClass="button-raised" stylesheets="@ControllerStyle.css" text="Find School" />
+                                        <Separator visible="false" />
+                                        <Button fx:id="nearestHospital" alignment="CENTER" onAction="#nearestHospital" prefHeight="20" styleClass="button-raised" stylesheets="@ControllerStyle.css" text="Find Nearest Hospital" />
+                                        <Separator prefWidth="200.0" />
+                                        <HBox fillHeight="true">
+                                            <children>
+                                                <GridPane alignment="CENTER" vgap="20" HBox.hgrow="ALWAYS">
+                                                    <TextField fx:id="radiusSelection" alignment="CENTER" onAction="#setRangeField" promptText="Choose a radius" styleClass="text-field, text-area" stylesheets="@ControllerStyle.css" GridPane.columnIndex="0" GridPane.rowIndex="0" HBox.hgrow="ALWAYS" />
+                                                    <HBox alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="1" HBox.hgrow="ALWAYS">
+                                                        <children>
+                                                            <Button fx:id="hospital" onAction="#findHospital" prefWidth="140" styleClass="button-raised" stylesheets="@ControllerStyle.css" text="Find Hospital" textAlignment="CENTER" />
+                                                            <Button fx:id="school" onAction="#findSchool" prefWidth="140" styleClass="button-raised" stylesheets="@ControllerStyle.css" text="Find School" />
+                                                        </children>
+                                                    </HBox>
+                                         <columnConstraints>
+                                            <ColumnConstraints />
+                                         </columnConstraints>
+                                         <rowConstraints>
+                                            <RowConstraints />
+                                            <RowConstraints />
+                                         </rowConstraints>
+                                                </GridPane>
+                                            </children>
+                                        </HBox>
+                                        <Separator prefWidth="200.0" />
+
+                                        <HBox fillHeight="true">
+                                            <children>
+                                                <GridPane alignment="CENTER" vgap="20" HBox.hgrow="ALWAYS">
+                                                    <TextField fx:id="location" alignment="CENTER" promptText="Search for location:" styleClass="text-field, text-area" stylesheets="@ControllerStyle.css" GridPane.columnIndex="0" GridPane.rowIndex="0" HBox.hgrow="ALWAYS" />
+                                                    <VBox alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="1" HBox.hgrow="ALWAYS">
+                                                        <children>
+                                                            <Button fx:id="search" onAction="#searchForLocation" prefWidth="140" styleClass="button-raised" stylesheets="@ControllerStyle.css" text="Search" textAlignment="CENTER" />
+                                                        </children>
+                                                    </VBox>
+                                         <columnConstraints>
+                                            <ColumnConstraints />
+                                         </columnConstraints>
+                                         <rowConstraints>
+                                            <RowConstraints />
+                                            <RowConstraints />
+                                         </rowConstraints>
+                                                </GridPane>
+                                            </children>
+                                        </HBox>
+
+                                        <Separator prefWidth="200.0" />
+                                        <CheckBox fx:id="heatMap" alignment="CENTER" onAction="#changeHeatmapVisibility" styleClass="check-box" stylesheets="@ControllerStyle.css" text="HeatMap" />
+                                        <Separator prefWidth="200.0" />
+
+                                        <Button fx:id="Clear" alignment="CENTER" contentDisplay="CENTER" onAction="#clearMap" styleClass="button" stylesheets="@ControllerStyle.css" text="Clear Map" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                        <Separator visible="false" />
                                     </children>
                                 </VBox>
-                                <Separator prefWidth="200.0" />
-                                <Label styleClass="label" stylesheets="@ControllerStyle.css" text="Centre to" textAlignment="CENTER" />
-                                <HBox alignment="CENTER">
-                                    <children>
-                                        <TextField fx:id="latitude" alignment="CENTER" prefHeight="80" prefWidth="150" promptText="latitute" styleClass="latitude" stylesheets="@ControllerStyle.css" />
-                                        <TextField fx:id="longitude" alignment="CENTER" prefHeight="80" prefWidth="150" promptText="longitute" styleClass="longitude" stylesheets="@ControllerStyle.css" />
-                                    </children>
-                                </HBox>
-                                <CheckBox fx:id="heatMap" alignment="CENTER" onAction="#changeHeatmapVisibility" styleClass="check-box" stylesheets="@ControllerStyle.css" text="HeatMap" />
-                                <Separator prefWidth="200.0" />
-                                <Button fx:id="Clear" alignment="TOP_CENTER" onAction="#clearMap" styleClass="button" stylesheets="@ControllerStyle.css" text="Clear Map" />
-                            </children>
-                        </VBox>
-                                <!-- Map -->
-                                <GoogleMapView fx:id="mapView" maxHeight="Infinity" maxWidth="Infinity" />
+                            </content>
+                        </ScrollPane>
+                        <!-- Map -->
+                        <GoogleMapView fx:id="mapView" maxHeight="Infinity" maxWidth="Infinity" />
                     </items>
                 </SplitPane>
             </children>
@@ -56,7 +96,7 @@
    <bottom>
        <VBox alignment="CENTER" styleClass="left" stylesheets="@ControllerStyle.css">
            <children>
-                <Label fx:id="display" prefHeight="60" styleClass="label" stylesheets="@ControllerStyle.css" text="Label" textAlignment="CENTER" BorderPane.alignment="CENTER" />
+                <Label fx:id="display" prefHeight="60" styleClass="label" stylesheets="@ControllerStyle.css" text="Display information" textAlignment="CENTER" BorderPane.alignment="CENTER" />
            </children>
        </VBox>
    </bottom>
