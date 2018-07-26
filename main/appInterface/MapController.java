@@ -5,13 +5,20 @@ import com.lynden.gmapsfx.MapComponentInitializedListener;
 import com.lynden.gmapsfx.javascript.object.*;
 import com.lynden.gmapsfx.shapes.Circle;
 import com.lynden.gmapsfx.shapes.CircleOptions;
+import javafx.beans.property.DoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import main.sqlUtils.FindNearestHospitalRequest;
 import main.sqlUtils.NationalCoverageRequest;
 import main.sqlUtils.SchoolsInRadiusRequest;
+//import sun.jvm.hotspot.oops.Mark;
 
 import java.net.URL;
 import java.sql.ResultSet;
@@ -21,44 +28,63 @@ import java.util.ResourceBundle;
 
 public class MapController implements Initializable, MapComponentInitializedListener {
 
-    private ArrayList<Marker> schoolMarkers = new ArrayList<>();
-    private ArrayList<Marker> hospitalMarkers = new ArrayList<>();
-    private Circle circle;
-    private int number1;
-
     @FXML
     private CheckBox heatMap;
-    @FXML
-    private CheckBox hospital;
-    @FXML
-    private CheckBox school;
 
+    @FXML
+    private SplitPane SplitPane = new SplitPane();
+    @FXML
+    private VBox ControlPane = new VBox();
+    @FXML
+    private VBox show = new VBox();
+
+    @FXML
+    private Button hospital;
+    @FXML
+    private Button school;
     @FXML
     private Button nearestHospital;
     @FXML
     private Button clear;
+    @FXML
+    private ToggleButton showHide;
 
-    @FXML TextField radiusSelection;
+
+    @FXML
+    private TextField radiusSelection;
+    @FXML
+    private TextField latitude;
+    @FXML
+    private TextField longitude;
 
     @FXML
     private GoogleMapView mapView;
 
-//    private static LatLong bogota = new LatLong(4.657865, -74.100264);
+    private ArrayList<Circle> radii = new ArrayList<>();
+    private static LatLong bogota;
     private GoogleMap map;
+
+    Image one = new Image(getClass().getResourceAsStream("1.png"));
+    Image two = new Image(getClass().getResourceAsStream("2.png"));
+
+    //private DoubleProperty splitPaneDividerPosition = SplitPane.getDividers().get(0).positionProperty();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         mapView.addMapInializedListener(this);
         // This beautiful line won't allow any other input than integers
         radiusSelection.textProperty().addListener(new appInterface.IntegerOnlyTextListener(radiusSelection));
-        number1 = parseInt(radiusSelection.getText(), -1);
+
+        showHide.setGraphic(new ImageView(two));
+        showHide();
     }
 
     @Override
     public void mapInitialized() {
+        bogota = new LatLong(4.657865, -74.100264);
         //Set the initial properties of the map.
         MapOptions mapOptions = new MapOptions();
-        mapOptions.center(new LatLong(4.657865, -74.100264))
+        mapOptions.center(bogota)
                 .overviewMapControl(false)
                 .panControl(false)
                 .rotateControl(false)
@@ -68,6 +94,24 @@ public class MapController implements Initializable, MapComponentInitializedList
                 .zoom(12);
 
         map = mapView.createMap(mapOptions);
+    }
+
+    @FXML
+    protected void showHide() {
+        showHide.setOnAction(event -> {
+            if (showHide.isSelected()) {
+                SplitPane.setDividerPositions(0);
+                show.setMaxWidth(0.1);
+                ControlPane.setVisible(false);
+                ControlPane.setManaged(false);
+                showHide.setGraphic(new ImageView(one));
+            } else {
+                SplitPane.getDividers().get(0).setPosition(0.4);
+                ControlPane.setVisible(true);
+                ControlPane.setManaged(true);
+                showHide.setGraphic(new ImageView(two));
+            }
+        });
     }
 
     /* Listener for the search button. */
@@ -85,15 +129,15 @@ public class MapController implements Initializable, MapComponentInitializedList
         FindNearestHospitalRequest request = new FindNearestHospitalRequest(map.getCenter());
 
         //Example displaying of result set
-        displayResultSet(request.getRequestResult(), true, true);
+        displayResultSet(request.getRequestResult(), true, true, false);
         //Example draw radius
-        drawRadius(map.getCenter(), radius);
+        drawRadius(map.getCenter(), radius, true);
         request.closeRequest();
 
         //Add schools in the radius
         SchoolsInRadiusRequest schoolRequest = new SchoolsInRadiusRequest(map.getCenter(), radius);
         //Do not recentre the map - keep it centred at the hospital
-        displayResultSet(schoolRequest.getRequestResult(), false, false);
+        displayResultSet(schoolRequest.getRequestResult(), false, false, false);
         schoolRequest.closeRequest();
 
     }
@@ -101,30 +145,30 @@ public class MapController implements Initializable, MapComponentInitializedList
     /* Listener for the Text field. */
     @FXML
     protected void setRangeField(ActionEvent event) {
-
-        // If an error occurs, it exits the app(annying)
-        //Stage stage = (Stage) heatMap.getScene().getWindow();
+        int number1 = parseInt(radiusSelection.getText(),-1);
+        // get a handle to the stage
+        Stage stage = (Stage) heatMap.getScene().getWindow();
 
         if (number1 < 0 || number1 > 50000) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to parse values in the range field.\n" +
                     "Please ensure the values are in the range.", ButtonType.CLOSE);
             alert.setTitle("Wrong input!");
             alert.showAndWait();
-            //stage.close();
+            stage.close();
         }
         else if (number1 == 0) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to parse values in the range field.\n" +
                     "Please ensure the values are not null.", ButtonType.CLOSE);
             alert.setTitle("Failed to parse values");
             alert.showAndWait();
-            //stage.close();
+            stage.close();
         }
         else if (number1 == -1) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to parse values in the range field.\n" +
                     "Please ensure the values are not null.", ButtonType.CLOSE);
             alert.setTitle("Failed to parse values");
             alert.showAndWait();
-            //stage.close();
+            stage.close();
 
         }
         else
@@ -132,21 +176,12 @@ public class MapController implements Initializable, MapComponentInitializedList
     }
 
     @FXML
-    protected void findSchool(ActionEvent event) {
-        setRangeField(event);
-
-        SchoolsInRadiusRequest schoolRequest = new SchoolsInRadiusRequest(map.getCenter(), number1);
-
-        displayResultSet(schoolRequest.getRequestResult(), false, false);
-    }
-
-    @FXML
     protected void clearMap(ActionEvent event) {
-        map.removeMarkers(schoolMarkers);
-        map.removeMarkers(hospitalMarkers);
+        map.clearMarkers();
 
-        if(circle != null)
-            map.removeMapShape(circle);
+        for (Circle aRadii : radii) {
+            map.removeMapShape(aRadii);
+        }
     }
 
     /**
@@ -184,7 +219,7 @@ public class MapController implements Initializable, MapComponentInitializedList
                 .title(name);
         Marker marker = new Marker(markerOptions);
         map.addMarker(marker);
-        schoolMarkers.add(marker);
+//        schoolMarkers.add(marker);
     }
 
     /**
@@ -201,7 +236,7 @@ public class MapController implements Initializable, MapComponentInitializedList
                 .title(name);
         Marker marker = new Marker(markerOptions);
         map.addMarker(marker);
-        hospitalMarkers.add(marker);
+//        hospitalMarkers.add(marker);
     }
 
     /**
@@ -209,7 +244,7 @@ public class MapController implements Initializable, MapComponentInitializedList
      * @param latlong
      * @param radius
      */
-    protected void drawRadius(LatLong latlong, double radius){
+    protected void drawRadius(LatLong latlong, double radius, boolean fit){
         CircleOptions circleOptions = new CircleOptions();
         circleOptions.center(latlong)
                 .radius(radius)
@@ -218,34 +253,53 @@ public class MapController implements Initializable, MapComponentInitializedList
                 .fillColor("blue")
                 .fillOpacity(0.2);
 
-        circle = new Circle(circleOptions);
+        Circle circle = new Circle(circleOptions);
 
         map.addMapShape(circle);
+        radii.add(circle);
+
+        if(fit){
+            //Fit map to bounding box
+            LatLongBounds bounds = new LatLongBounds();
+            bounds.extend(latlong.getDestinationPoint(90.0, radius));
+            bounds.extend(latlong.getDestinationPoint(270.0, radius));
+            map.fitBounds(bounds);
+        }
     }
 
-    protected void displayResultSet(ResultSet res, Boolean hospital, Boolean recentre){
-        double avgLong = 0;
-        double avgLat = 0;
+    /**
+     * Displays coordinates of a result set
+     * Expect result set with fields {id}, {name}, {lat}, {long}
+     * @param res: The ResultSet
+     * @param hospital: True if displaying hospital, false for school
+     * @param recentre: If True, recentres to middle of points (without zooming)
+     * @param fit: If True, fits map to points (adjust location and zoom
+     * if recentre AND fit true, will only fit.
+     */
+    protected void displayResultSet(ResultSet res, boolean hospital, boolean recentre, boolean fit){
+        LatLongBounds bounds = new LatLongBounds();
+
         try {
             res.beforeFirst();
-            while (res.next()) {
-                LatLong coords = new LatLong(res.getDouble(3), res.getDouble(4));
+            if(res.isBeforeFirst()) {
+                while (res.next()) {
+                    LatLong coords = new LatLong(res.getDouble(3), res.getDouble(4));
 
-                //If recentering, compute average lat/long for new centre
-                if(recentre){
-                    avgLat += coords.getLatitude();
-                    avgLong += coords.getLongitude();
+                    //Keeps bounding box of coordinates
+                    bounds.extend(coords);
+
+                    if (hospital) {
+                        hospitalMarker(coords, res.getString(2));
+                    } else {
+                        schoolMarker(coords, res.getString(2));
+                    }
                 }
-                if (hospital) {
-                    hospitalMarker(coords, res.getString(2));
-                } else {
-                    schoolMarker(coords, res.getString(2));
+                if(fit) {
+                    map.fitBounds(bounds);
+                }else if(recentre){
+                    map.setCenter(new LatLong(0.5*(bounds.getNorthEast().getLatitude() + bounds.getSouthWest().getLatitude()),
+                            0.5*(bounds.getNorthEast().getLongitude() + bounds.getSouthWest().getLongitude())));
                 }
-            }
-            if(recentre){
-                //TODO(Set zoom to fit bounding box)
-                int rowCount = res.getRow() + 1;
-                map.setCenter(new LatLong(avgLat/rowCount, avgLong/rowCount));
             }
         } catch (SQLException e) {
             e.printStackTrace();
