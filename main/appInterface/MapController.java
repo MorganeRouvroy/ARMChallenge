@@ -9,6 +9,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -124,6 +125,7 @@ public class MapController implements Initializable, MapComponentInitializedList
                 ControlPane.setVisible(true);
                 ControlPane.setManaged(true);
                 scrollPane.setManaged(true);
+                scrollPane.setVisible(true);
                 showHide.setGraphic(new ImageView(two));
             }
         });

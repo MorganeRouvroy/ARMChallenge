@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
@@ -16,7 +17,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.control.ScrollPane?>
 <BorderPane prefHeight="500.0" prefWidth="800.0" stylesheets="@ControllerStyle.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.appInterface.MapController">
     <center>
         <HBox>
@@ -27,7 +27,7 @@
                 <SplitPane fx:id="SplitPane" dividerPositions="0.3" orientation="HORIZONTAL" HBox.hgrow="ALWAYS">
                     <items>
 
-                        <ScrollPane fx:id="scrollPane" HBox.hgrow="ALWAYS">
+                        <ScrollPane fx:id="scrollPane" fitToWidth="true" hbarPolicy="NEVER" HBox.hgrow="ALWAYS">
                             <content>
                                 <VBox fx:id="ControlPane" alignment="CENTER" prefWidth="300" spacing="35" stylesheets="@ControllerStyle.css">
                                     <children>
