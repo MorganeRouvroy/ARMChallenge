@@ -3,6 +3,10 @@ package main.appInterface;
 import com.lynden.gmapsfx.GoogleMapView;
 import com.lynden.gmapsfx.MapComponentInitializedListener;
 import com.lynden.gmapsfx.javascript.object.*;
+import com.lynden.gmapsfx.service.geocoding.GeocoderStatus;
+import com.lynden.gmapsfx.service.geocoding.GeocodingResult;
+import com.lynden.gmapsfx.service.geocoding.GeocodingService;
+import com.lynden.gmapsfx.service.geocoding.GeocodingServiceCallback;
 import com.lynden.gmapsfx.shapes.Circle;
 import com.lynden.gmapsfx.shapes.CircleOptions;
 import javafx.beans.property.DoubleProperty;
@@ -16,10 +20,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import main.sqlUtils.FindNearestHospitalRequest;
-import main.sqlUtils.HospitalsInRadiusRequest;
-import main.sqlUtils.NationalCoverageRequest;
-import main.sqlUtils.SchoolsInRadiusRequest;
+import main.sqlUtils.*;
 
 
 import java.net.URL;
@@ -133,9 +134,6 @@ public class MapController implements Initializable, MapComponentInitializedList
 
     @FXML
     protected void nearestHospital (ActionEvent event) {
-
-
-
         //For clicking schools button
         FindNearestHospitalRequest request = new FindNearestHospitalRequest(map.getCenter());
 
@@ -150,7 +148,6 @@ public class MapController implements Initializable, MapComponentInitializedList
             String name = res.getString(2);
 
             display.setText(String.format("Closest hospital was %s at %.3f, %.3f which is %.3fkm away from current location%n", name, coords.getLatitude(), coords.getLongitude(), coords.distanceFrom(map.getCenter())/1000));
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -352,5 +349,56 @@ public class MapController implements Initializable, MapComponentInitializedList
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void findAddress(String address) {
+
+        GeocodingService geocodingService = new GeocodingService();
+        geocodingService.geocode(address, (GeocodingResult[] results, GeocoderStatus status) -> {
+
+            //Get first result which lies in Colombia
+            LatLong centre = null;
+            LatLongBounds llb = null;
+            String res = null;
+            boolean foundResult = false;
+            int i = 1;
+            for (GeocodingResult result : results) {
+                centre = new LatLong(result.getGeometry().getLocation().getLatitude(), result.getGeometry().getLocation().getLongitude());
+                System.out.println("Checking geocoding result " + i);
+                if(isInColombia(centre)){
+                    res = result.getFormattedAddress();
+                    llb = result.getGeometry().getViewPort();
+                    foundResult = true;
+                    break;
+                }
+                i+=1;
+            }
+            if(!foundResult){
+                System.out.println("Could not find results in Colombia corresponding to search '" + address + "'");
+            }else{
+                if(llb != null) {
+                    map.fitBounds(llb);
+                }else if(centre != null){
+                    map.setCenter(centre);
+                }
+                System.out.println("Best match in Colombia is " + res);
+            }
+
+
+        });
+    }
+
+    boolean isInColombia(LatLong latlong){
+        IsInColombiaRequest request = new IsInColombiaRequest(latlong);
+        ResultSet res = request.getRequestResult();
+        boolean result = false;
+        try {
+            res.next();
+            result = res.getBoolean(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        request.closeRequest();
+        return result;
     }
 }
