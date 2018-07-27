@@ -18,7 +18,7 @@ It provides information on the location of health facilities and schools in Colo
 ### Table of Contents
 
 - [Installation](#installation)
-- [How To Use](#how-to-use)
+- [How To Use](#usage-guide)
   - [Find Nearest Health Facilities](#find-nearest-health-facilities)
   - [Search Within a Radius](#find-health-facilities-and-schools-within-a-radius)
   - [Clear Map](#clear-map)
@@ -33,15 +33,15 @@ The application can either be built from sources or run precompiled.
 
 #### From source
 This application can be built using [maven](https://maven.apache.org/download.cgi):
-* Run ```maven install``` to make the jar 
+* Run ```mvn install``` to make the jar 
 * Run the ```CAPPS-1.0-jar-with-dependencies.jar``` as below
 
 To run tests:
-* ```maven test```
+* ```mvn test```
 
 #### Precompiled .jar (all dependencies included)
 
-* Download CAPPS-1.0-jar-with-dependencies.jar
+* Download [CAPPS-1.0-jar-with-dependencies.jar](target/CAPPS-1.0-jar-with-dependencies.jar)
 * Double click the file to run
 OR
 * Run ```java -jar CAPPS-1.0-jar-with-dependencies.jar```
@@ -97,3 +97,4 @@ The sample below shows steps taken to visualise all schools within a certain rad
 
 ### Misc
 * The provided schools dataset contains information about over 60,000 seemingly random buildings in Colombia, including gas stations, museums, shops etc; it has been filtered down to around 4000 schools by keywords (e.g. 'Escuela'), but some may be missing.
+* Formal tests were conducted on the SQL requests - the tests are located in testSQL.java and are self explanatory.
