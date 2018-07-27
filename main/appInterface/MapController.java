@@ -318,9 +318,7 @@ public class MapController implements Initializable, MapComponentInitializedList
                         schoolMarker(coords, res.getString(2));
                     }
                 }
-                if(false) {
-                    map.fitBounds(bounds);
-                }else if(recentre){
+                if(recentre){
                     map.setCenter(new LatLong(0.5*(bounds.getNorthEast().getLatitude() + bounds.getSouthWest().getLatitude()),
                             0.5*(bounds.getNorthEast().getLongitude() + bounds.getSouthWest().getLongitude())));
                 }

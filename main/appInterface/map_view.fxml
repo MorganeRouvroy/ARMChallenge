@@ -63,7 +63,7 @@
                                                HBox.hgrow="ALWAYS"/>
                                     <VBox alignment="CENTER" GridPane.columnIndex="0"
                                           GridPane.rowIndex="1" HBox.hgrow="ALWAYS">
-                                        <Button fx:id="search" onAction="#searchForLocation"
+                                        <Button onAction="#searchForLocation"
                                                 prefWidth="140" styleClass="button-raised"
                                                 stylesheets="@ControllerStyle.css"
                                                 text="Search" textAlignment="CENTER"/>
