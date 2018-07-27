@@ -11,7 +11,7 @@
 In order to help the government of the Republic of Colombia identify
 schools most in need of infrastructure and planning
 for disaster prevention and response, the application
-provides information on the location of hospitals and schools in Columbia.
+provides information on the location of hospitals and schools in Colombia.
 
 ---
 
@@ -34,17 +34,17 @@ The application can either be installed from sources or run precompiled.
 
 This application can be built using maven :
 * Run ```maven install``` to make the jar 
-* Run the ```CAPPS.jar``` as below
+* Run the ```CAPPS-1.0-jar-with-dependencies.jar``` as below
 
 To run tests:
 * ```maven test```
 
 #### Precompiled .jar (all dependencies included)
 
-* Download CAPPS.jar
+* Download CAPPS-1.0-jar-with-dependencies.jar.jar
 * Double click the file to run
 OR
-* Run ```java -jar CAPPS.jar```
+* Run ```java -jar CAPPS-1.0-jar-with-dependencies.jar.jar```
 
 ---
 
@@ -73,7 +73,7 @@ The coordinates, radius and the number of schools are will be displayed.
 
 ##### Clear Map
 
-The `Clear Map` button clears the map.
+The `Clear Map` button clears the map of markers.
 
 ![Project Image](pictures/clear_map.gif)
 
