@@ -78,8 +78,8 @@ The `Search` button allows you to search for locations in Colombia - for example
 
 ##### Coverage Analysis
 
-For each state in Colombia, the average distance from each school to the nearest healthfacility is calculated in km.
-This is displayed using the `Display Coverage` control; states in green have a lower average distance (and are thus 'better serviced' by health facilities).
+For each state in Colombia, the average distance from each school to the nearest health facility is calculated in kilometres.
+This is displayed using the `Display Coverage` control; states in green have a lower average distance (and are thus 'better serviced' by health facilities). This should give an initial insight on which areas need work.
 Clicking a state will display the exact average distance.
 
 ![Project Image](pictures/heatmap.gif)
