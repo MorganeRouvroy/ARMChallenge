@@ -303,6 +303,13 @@
     -fx-stroke: -fx-text-base-color;
 }
 
+.labelItalic {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-disabled-opacity: 0.8;
+    -fx-font-style: italic;
+    -fx-font-weight: lighter;
+}
 /*******************************************************************************
  *                                                                             *
  * List, Tree, Table COMMON                                                    *

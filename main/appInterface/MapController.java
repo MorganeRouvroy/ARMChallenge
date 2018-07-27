@@ -23,6 +23,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import static java.lang.Float.parseFloat;
+
 public class MapController implements Initializable, MapComponentInitializedListener {
 
     private ArrayList<Circle> radii = new ArrayList<>();
@@ -56,9 +58,6 @@ public class MapController implements Initializable, MapComponentInitializedList
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         mapView.addMapInializedListener(this);
-
-        // This beautiful line won't allow any other input than integers
-        radiusSelection.textProperty().addListener(new appInterface.IntegerOnlyTextListener(radiusSelection));
 
         //The collapsing button has to be initialised here
         showHide.setGraphic(new ImageView(two));
@@ -142,7 +141,7 @@ public class MapController implements Initializable, MapComponentInitializedList
 
     @FXML
     protected void findSchool (ActionEvent event) {
-        double radius = setRangeField(event)*1000;
+        double radius = getRangeField(event)*1000;
 
         if(radius > 0){
             SchoolsInRadiusRequest request = new SchoolsInRadiusRequest(map.getCenter(), radius);
@@ -157,7 +156,7 @@ public class MapController implements Initializable, MapComponentInitializedList
 
     @FXML
     protected void findHospital (ActionEvent event) {
-        double radius = setRangeField(event)*1000;
+        double radius = getRangeField(event)*1000;
         if(radius > 0){
             HospitalsInRadiusRequest request = new HospitalsInRadiusRequest(map.getCenter(), radius);
             displayResultSet(request.getRequestResult(), true, false);
@@ -174,7 +173,13 @@ public class MapController implements Initializable, MapComponentInitializedList
     @FXML
     protected void changeHeatmapVisibility (ActionEvent event) {
         if (coverageMap == null){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Loading coverage map for the first time " +
+                    "may take up to 10 seconds.", ButtonType.CLOSE);
+            alert.setTitle("Please wait");
+            alert.setHeaderText("Coverage map loading");
+            alert.show();
             coverageMap = new CoverageMap(map);
+            display.setText("Coverage map loaded");
         } else {
             coverageMap.changeVisibility();
         }
@@ -182,23 +187,23 @@ public class MapController implements Initializable, MapComponentInitializedList
 
     /* Listener for the Text field. */
     @FXML
-    protected double setRangeField(ActionEvent event) {
+    protected double getRangeField(ActionEvent event) {
         float radius;
 
         try {
             radius = parseFloat(radiusSelection.getText());
 
-            if (radius <= 0 || radius > 50000) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to parse value of the range field.\n" +
-                        "Please ensure the values are in the range 1 to 50000.", ButtonType.CLOSE);
-                alert.setTitle("Failed to parse values");
+            if (radius <= 0 || radius > 1000) {
+                Alert alert = new Alert(Alert.AlertType.ERROR,"Please input a distance in km between 0 and 1000.\n" +
+                        "Decimal numbers are also allowed.", ButtonType.CLOSE);
+                alert.setTitle("Radius invalid");
                 alert.showAndWait();
                 radius = -1;
             }
         } catch (NumberFormatException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to parse value of the range field.\n" +
-                    "Please ensure the values are in the range 1 to 50000.", ButtonType.CLOSE);
-            alert.setTitle("Failed to parse values");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please input a distance in km between 0 and 1000.\n" +
+                    "Decimal numbers are also allowed.", ButtonType.CLOSE);
+            alert.setTitle("Radius is not a number");
             alert.showAndWait();
 
             radius = -1;

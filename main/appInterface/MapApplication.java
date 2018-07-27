@@ -29,8 +29,6 @@ public class MapApplication extends Application {
         new Connector();
         Parent root = FXMLLoader.load(getClass().getResource("map_view.fxml"));
 
-//        Image icon = new Image(getClass().getResourceAsStream("icon.png"));
-//        Image icon = null;
         URL url = new URL("https://i.imgur.com/XJRK3cG.png)");
         BufferedImage c= ImageIO.read(url);
         Image icon = SwingFXUtils.toFXImage(c, null);

@@ -1,4 +1,7 @@
 package main.sqlUtils;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+
 import java.sql.*;
 
 import static java.lang.System.err;
@@ -39,7 +42,10 @@ public class Connector {
 
  		} catch (SQLException e){
  			e.printStackTrace(err);
-            err.println("Cette application nécessite un accès internet.");
+			Alert alert = new Alert(Alert.AlertType.ERROR, "The application needs an internet connection!", ButtonType.CLOSE);
+			alert.setTitle("No internet connection");
+			alert.showAndWait();
+
             System.exit(1);
  		}
  	}
