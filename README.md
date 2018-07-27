@@ -1,13 +1,14 @@
-![Project Image](pictures/logo.png)
 
-Look at the awesome logo I made at: [onlinelogomaker.com](https://onlinelogomaker.com)
+<img src="pictures/logo.png" alt="BBA" width="200px"/>
 
-# Team BBA - 2018 Intern Innovation Challenge
+
+# Colombia Assistant for Planning Public Services (CAPPS)
+## Team BBA - 2018 Intern Innovation Challenge
 ### Emergency Response in Partnership with Unicef
 
 ---
 
-In order to help the government of Columbia identify
+In order to help the government of the Republic of Colombia identify
 schools most in need of infrastructure and planning
 for disaster prevention and response, the application
 provides information on the location of hospitals and schools in Columbia.
@@ -27,20 +28,31 @@ provides information on the location of hospitals and schools in Columbia.
 ---
 
 ### Installation
+The application can either be installed from sources or run precompiled.
 
-To install this thingy, type this other thingy
+#### From source
 
-```
-mah install command -blabla
-```
+This application can be built using maven :
+* Run ```maven install``` to make the jar 
+* Run the ```CAPPS.jar``` as below
 
+To run tests:
+* ```maven test```
 
+#### Precompiled .jar (all dependencies included)
+
+* Download CAPPS.jar
+* Double click the file to run
+OR
+* Run ```java -jar CAPPS.jar```
 
 ---
 
-### How to Use
+### Usage Guide
 
-The application uses the centre of the map as the current reference location.
+/!\ This application requires an Internet connection to run correctly.
+
+The application uses the centre of the map as the current reference location (e.g. when finding schools within a radius)
 
 ##### Find Nearest Hospitals
 
@@ -67,14 +79,16 @@ The `Clear Map` button clears the map.
 
 ##### Search Location
 
-The `Search` button allows you to search for locations in Columbia.
+The `Search` button allows you to search for locations in Colombia - for example, searching 'Hospital de San Jose' will go to the [corresponding hospital in Bogota](http://www.hospitaldesanjose.org.co/).
 
 ![Project Image](pictures/search_location.gif)
 
-##### Heat Map
+##### Coverage Analysis
 
-The `Heat Map` shows regions in Columbia and the average distance of schools to their nearest hospitals.
+For each state in Colombia, the average distance from each school to the nearest healthsite is calculated in km.
+This is displayed using the `Display Coverage` button; states in green have a lower average distance (and are thus 'better serviced' by health services).
+Clicking a state will display the exact average distance.
 
 ![Project Image](pictures/heatmap.gif)
 
-
+---
