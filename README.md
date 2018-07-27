@@ -1,4 +1,4 @@
-![Project Image](https://github.com/MorganeRouvroy/ARMChallenge.git/pictures/logo.png)
+![Project Image](pictures/logo.png)
 
 Look at the awesome logo I made at: [onlinelogomaker.com](https://onlinelogomaker.com)
 
@@ -49,7 +49,7 @@ clicking the `Find Nearest Hospital` button will mark the nearest
 hospital on the map. The application shows the name, coordinates and the distance
 of the hospital from the current location.
 
-![Project Image](https://github.com/MorganeRouvroy/ARMChallenge.git/pictures/find_nearest_hospital.gif)
+![Project Image](pictures/find_nearest_hospital.gif)
 
 ##### Find Hospitals and Schools within a Radius
 
@@ -57,24 +57,24 @@ Enter desired radius in km in the field and click the `Find Hospital` or `Find S
 The application will show the radius on map and mark hospitals or schools within the radius.
 The coordinates, radius and the number of schools are will be displayed.
 
-![Project Image](https://github.com/MorganeRouvroy/ARMChallenge.git/pictures/find_schools_hospitals.gif)
+![Project Image](pictures/find_schools_hospitals.gif)
 
 ##### Clear Map
 
 The `Clear Map` button clears the map.
 
-![Project Image](https://github.com/MorganeRouvroy/ARMChallenge.git/pictures/clear_map.gif)
+![Project Image](pictures/clear_map.gif)
 
 ##### Search Location
 
 The `Search` button allows you to search for locations in Columbia.
 
-![Project Image](https://github.com/MorganeRouvroy/ARMChallenge.git/pictures/search_location.gif)
+![Project Image](pictures/search_location.gif)
 
 ##### Heat Map
 
 The `Heat Map` shows regions in Columbia and the average distance of schools to their nearest hospitals.
 
-![Project Image](https://github.com/MorganeRouvroy/ARMChallenge.git/pictures/heatmap.gif)
+![Project Image](pictures/heatmap.gif)
 
 
