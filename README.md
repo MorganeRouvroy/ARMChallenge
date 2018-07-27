@@ -26,6 +26,7 @@ It provides information on the location of health facilities and schools in Colo
   - [Coverage Analysis](#coverage-analysis)
   - [Example Usage](#example-usage)
 - [Misc](#misc)
+- [Authors](#authors)
 ---
 
 ### Installation
@@ -98,3 +99,14 @@ The sample below shows steps taken to visualise all schools within a certain rad
 ### Misc
 * The provided schools dataset contains information about over 60,000 seemingly random buildings in Colombia, including gas stations, museums, shops etc; it has been filtered down to around 4000 schools by keywords (e.g. 'Escuela'), but some may be missing.
 * Formal tests were conducted on the SQL requests - the tests are located in testSQL.java and are self explanatory. Informal tests were conducted on the UI interface to ensure it handles a varying range of user interaction.
+
+### Authors
+[Morgane Rouvroy](https://github.com/MorganeRouvroy)
+
+[Andreea-Elena Ungureanu](https://github.com/andreea21ungureanu)
+
+[Basil Mustafa](https://github.com/Basil-M)
+
+[Hooi Ju Lim](https://github.com/LHJujuu)
+
+[Adelaida Creosteanu](https://github.com/adelaidaCreosteanu)
