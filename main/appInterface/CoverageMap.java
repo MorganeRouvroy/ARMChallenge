@@ -135,13 +135,16 @@ public class CoverageMap {
         for(Polygon poly : polygons) {
             poly.setVisible(! poly.getVisible());
         }
-        if(infsOpen) {
+        changeInfoWindows(!infsOpen);
+        infsOpen = !infsOpen;
+    }
+
+    public void changeInfoWindows(boolean show){
+        if(!show){
+            //Hide all info windows
             for (InfoWindow inf : infs) {
                 inf.close();
             }
-            infsOpen = false;
-        }else{
-            infsOpen = true;
         }
     }
 }

@@ -15,10 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import main.sqlUtils.FindNearestHospitalRequest;
-import main.sqlUtils.HospitalsInRadiusRequest;
-import main.sqlUtils.IsInColombiaRequest;
-import main.sqlUtils.SchoolsInRadiusRequest;
+import main.sqlUtils.*;
 
 import java.net.URL;
 import java.sql.ResultSet;
@@ -215,6 +212,9 @@ public class MapController implements Initializable, MapComponentInitializedList
 
         //clear the bottom label
         display.setText("");
+        if(coverageMap != null){
+            coverageMap.changeInfoWindows(false);
+        }
     }
 
     /**
@@ -273,6 +273,7 @@ public class MapController implements Initializable, MapComponentInitializedList
      * @param radius : radius of circle
      */
     private void drawRadius(LatLong latlong, double radius){
+
         CircleOptions circleOptions = new CircleOptions();
         circleOptions.center(latlong)
                 .radius(radius)
@@ -283,14 +284,29 @@ public class MapController implements Initializable, MapComponentInitializedList
 
         Circle circle = new Circle(circleOptions);
 
-        map.addMapShape(circle);
-        radii.add(circle);
+        //First check it is not too close to other circles
+        //Don't want many radii stacked on top of each other
+        LatLong thisNE = circle.getBounds().getNorthEast();
+        LatLong thisSW = circle.getBounds().getSouthWest();
+        boolean tooClose = false;
+        for (Circle aCircle: radii) {
+            tooClose = thisNE.distanceFrom(aCircle.getBounds().getNorthEast()) < 5;
+            tooClose = tooClose || (thisSW.distanceFrom(aCircle.getBounds().getSouthWest()) < 5);
+            if(tooClose){break;}
+        }
 
-        //Fit map to bounding box
-        LatLongBounds bounds = new LatLongBounds();
-        bounds.extend(latlong.getDestinationPoint(90.0, radius));
-        bounds.extend(latlong.getDestinationPoint(270.0, radius));
-        map.fitBounds(bounds);
+
+        if(!tooClose) {
+            //Add circle to the map
+            map.addMapShape(circle);
+            radii.add(circle);
+
+            //Fit map to bounding box
+            LatLongBounds bounds = new LatLongBounds();
+            bounds.extend(latlong.getDestinationPoint(90.0, radius));
+            bounds.extend(latlong.getDestinationPoint(270.0, radius));
+            map.fitBounds(bounds);
+        }
     }
 
     /**
