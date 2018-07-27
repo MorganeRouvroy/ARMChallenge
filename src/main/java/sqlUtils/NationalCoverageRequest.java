@@ -1,4 +1,4 @@
-package main.sqlUtils;
+package sqlUtils;
 
 public class NationalCoverageRequest extends SQLRequest{
 

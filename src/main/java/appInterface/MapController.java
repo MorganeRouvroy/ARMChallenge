@@ -1,4 +1,4 @@
-package main.appInterface;
+package appInterface;
 
 import com.lynden.gmapsfx.GoogleMapView;
 import com.lynden.gmapsfx.MapComponentInitializedListener;
@@ -15,10 +15,10 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import main.sqlUtils.FindNearestHospitalRequest;
-import main.sqlUtils.HospitalsInRadiusRequest;
-import main.sqlUtils.IsInColombiaRequest;
-import main.sqlUtils.SchoolsInRadiusRequest;
+import sqlUtils.FindNearestHospitalRequest;
+import sqlUtils.HospitalsInRadiusRequest;
+import sqlUtils.IsInColombiaRequest;
+import sqlUtils.SchoolsInRadiusRequest;
 
 import java.net.URL;
 import java.sql.ResultSet;
@@ -55,8 +55,8 @@ public class MapController implements Initializable, MapComponentInitializedList
 
     private GoogleMap map;
 
-    private Image one = new Image(getClass().getResourceAsStream("1.png"));
-    private Image two = new Image(getClass().getResourceAsStream("2.png"));
+    private Image one = new Image(getClass().getResourceAsStream("/css/1.png"));
+    private Image two = new Image(getClass().getResourceAsStream("/css/2.png"));
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -131,7 +131,8 @@ public class MapController implements Initializable, MapComponentInitializedList
             LatLong coords = new LatLong(res.getDouble(3), res.getDouble(4));
             String name = res.getString(2);
 
-            display.setText(String.format("Closest health site was %s at %.3f, %.3f which is %.3fkm away from current location%n", name, coords.getLatitude(), coords.getLongitude(), coords.distanceFrom(map.getCenter()) / 1000));
+            display.setText(String.format("Closest health site was %s at %.3f, %.3f which is %.3fkm away from current location%n",
+                    name, coords.getLatitude(), coords.getLongitude(), coords.distanceFrom(map.getCenter()) / 1000));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -164,7 +165,8 @@ public class MapController implements Initializable, MapComponentInitializedList
             HospitalsInRadiusRequest request = new HospitalsInRadiusRequest(map.getCenter(), radius);
             displayResultSet(request.getRequestResult(), true, false);
 
-            display.setText(String.format("Found %d health sites within %.2fkm of %.3f, %.3f%n", request.resultCount(), radius / 1000, map.getCenter().getLatitude(), map.getCenter().getLongitude()));
+            display.setText(String.format("Found %d health sites within %.2fkm of %.3f, %.3f%n", request.resultCount(),
+                    radius / 1000, map.getCenter().getLatitude(), map.getCenter().getLongitude()));
 
             if(request.resultCount() > 0){drawRadius(map.getCenter(), radius);}
             request.closeRequest();
@@ -381,7 +383,7 @@ public class MapController implements Initializable, MapComponentInitializedList
      * Checks whether a requested LatLong is in Colombia using IsInColombia request
      * @param latlong: Coordinates to check
      *
-     * @return: True if latlong is in colombia
+     * @return True if latlong is in colombia
      */
     private boolean isInColombia(LatLong latlong){
         IsInColombiaRequest request = new IsInColombiaRequest(latlong);

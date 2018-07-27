@@ -1,4 +1,4 @@
-package main.appInterface;
+package appInterface;
 
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
@@ -7,7 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import main.sqlUtils.Connector;
+import sqlUtils.Connector;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -25,7 +25,7 @@ public class MapApplication extends Application {
         // Stage -> Scene -> Parent
 
         new Connector();
-        Parent root = FXMLLoader.load(getClass().getResource("map_view.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/map_view.fxml"));
 
         URL url = new URL("https://i.imgur.com/XJRK3cG.png)");
         BufferedImage c= ImageIO.read(url);

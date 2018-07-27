@@ -1,8 +1,11 @@
-package main.sqlUtils;
+package sqlUtils;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 import static java.lang.System.err;
 

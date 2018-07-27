@@ -6,14 +6,14 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane prefHeight="500.0" prefWidth="800.0" stylesheets="@ControllerStyle.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.appInterface.MapController">
+<BorderPane prefHeight="500.0" prefWidth="800.0" stylesheets="@../css/ControllerStyle.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="appInterface.MapController">
 
     <center>
 
         <HBox>
-            <VBox styleClass="left" stylesheets="@ControllerStyle.css" HBox.hgrow="NEVER">
+            <VBox styleClass="left" stylesheets="@../css/ControllerStyle.css" HBox.hgrow="NEVER">
                 <ToggleButton fx:id="showHide" onAction="#showHide" prefWidth="20" styleClass="button"
-                              stylesheets="@ControllerStyle.css" textAlignment="CENTER"/>
+                              stylesheets="@../css/ControllerStyle.css" textAlignment="CENTER"/>
             </VBox>
 
             <StackPane HBox.hgrow="ALWAYS">
@@ -25,11 +25,11 @@
                             <Insets left="10.0" right="10.0"/>
                         </padding>
                         <VBox alignment="CENTER" prefWidth="300" spacing="35"
-                              stylesheets="@ControllerStyle.css">
+                              stylesheets="@../css/ControllerStyle.css">
                             <Separator visible="false"/>
                             <Button alignment="CENTER"
                                     onAction="#nearestHospital" prefHeight="20"
-                                    styleClass="button-raised" stylesheets="@ControllerStyle.css"
+                                    styleClass="button-raised" stylesheets="@../css/ControllerStyle.css"
                                     text="Find nearest health site"/>
                             <Separator prefWidth="200.0"/>
 
@@ -43,7 +43,7 @@
                                                onAction="#getRangeField"
                                                promptText="e.g. 10.5"
                                                styleClass="text-field, text-area"
-                                               stylesheets="@ControllerStyle.css"
+                                               stylesheets="@../css/ControllerStyle.css"
                                                GridPane.columnIndex="0" GridPane.rowIndex="1"
                                                HBox.hgrow="ALWAYS" maxWidth="100"/>
                                     </VBox>
@@ -51,11 +51,11 @@
                                           GridPane.rowIndex="2" HBox.hgrow="ALWAYS">
                                         <Button onAction="#findHospital"
                                                 prefWidth="140" styleClass="button-raised"
-                                                stylesheets="@ControllerStyle.css"
+                                                stylesheets="@../css/ControllerStyle.css"
                                                 text="Health site" textAlignment="CENTER"/>
                                         <Button onAction="#findSchool"
                                                 prefWidth="140" styleClass="button-raised"
-                                                stylesheets="@ControllerStyle.css"
+                                                stylesheets="@../css/ControllerStyle.css"
                                                 text="Schools"/>
                                     </HBox>
                                 </GridPane>
@@ -68,14 +68,14 @@
                                     <TextField fx:id="location" alignment="CENTER"
                                                promptText="e.g. Hospital de San Jose"
                                                styleClass="text-field, text-area"
-                                               stylesheets="@ControllerStyle.css"
+                                               stylesheets="@../css/ControllerStyle.css"
                                                GridPane.columnIndex="0" GridPane.rowIndex="0"
                                                HBox.hgrow="ALWAYS" prefWidth="180"/>
                                     <VBox alignment="CENTER" GridPane.columnIndex="0"
                                           GridPane.rowIndex="1" HBox.hgrow="ALWAYS">
                                         <Button onAction="#searchForLocation"
                                                 prefWidth="140" styleClass="button-raised"
-                                                stylesheets="@ControllerStyle.css"
+                                                stylesheets="@../css/ControllerStyle.css"
                                                 text="Search" textAlignment="CENTER"/>
                                     </VBox>
                                 </GridPane>
@@ -89,7 +89,7 @@
                             <VBox alignment="CENTER">
                                 <CheckBox alignment="CENTER"
                                           onAction="#changeHeatmapVisibility" styleClass="check-box"
-                                          stylesheets="@ControllerStyle.css" text="Display coverage"/>
+                                          stylesheets="@../css/ControllerStyle.css" text="Display coverage"/>
                             </VBox>
                             <Label text="Click states to show average distance from schools to nearest health site."
                                    textAlignment="CENTER" styleClass="labelItalic" wrapText="true"/>
@@ -102,7 +102,7 @@
                             <VBox alignment="CENTER">
                                 <Button alignment="CENTER" contentDisplay="CENTER"
                                     onAction="#clearMap" styleClass="button"
-                                    stylesheets="@ControllerStyle.css" text="Clear"
+                                    stylesheets="@../css/ControllerStyle.css" text="Clear"
                                     GridPane.columnIndex="0" GridPane.rowIndex="0"/>
                             </VBox>
                             <Separator visible="false"/>
@@ -124,8 +124,8 @@
     </center>
 
     <bottom>
-        <VBox alignment="CENTER" styleClass="left" stylesheets="@ControllerStyle.css">
-            <Label fx:id="display" prefHeight="50" wrapText="true" styleClass="label" stylesheets="@ControllerStyle.css"
+        <VBox alignment="CENTER" styleClass="left" stylesheets="@../css/ControllerStyle.css">
+            <Label fx:id="display" prefHeight="50" wrapText="true" styleClass="label" stylesheets="@../css/ControllerStyle.css"
                    textAlignment="CENTER" BorderPane.alignment="CENTER"/>
         </VBox>
     </bottom>

@@ -1,4 +1,4 @@
-package main.sqlUtils;
+package sqlUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,21 +14,12 @@ public class SQLRequest {
     private ResultSet res = null ;
 
     /**
-     * Default constructor. For request with no ?
-     * @param req the request
-     */
-    public SQLRequest(String req) {
-        this(req, new String[0]);
-    }
-
-
-    /**
      * Constructor for ? requests
      * /!\ requires options.length == "nb of ? in req"
      * @param req the request with ?
      * @param options the options
      */
-    public SQLRequest(String req, Object[] options) {
+    SQLRequest(String req, Object[] options) {
         try{
             Connection con = Connector.getCon();
             stmt = con.prepareStatement(req, res.TYPE_SCROLL_INSENSITIVE, res.CONCUR_UPDATABLE);
@@ -85,6 +76,10 @@ public class SQLRequest {
         }
     }
 
+    /**
+     * Counts the number of rows in a SQL request resultSet for DEBUG PURPOSES
+     * @return number of rows
+     */
     public int resultCount(){
 
         int c = 0;

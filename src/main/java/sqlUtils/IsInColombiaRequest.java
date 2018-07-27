@@ -1,16 +1,15 @@
-package main.sqlUtils;
+package sqlUtils;
 
 import com.lynden.gmapsfx.javascript.object.LatLong;
 
 /**
- * SQL request for getting all the schools in the radius of given position
+ * SQL request checking if a position is in Colombia
  */
 public class IsInColombiaRequest extends SQLRequest {
     /**
-     * Get schools in radius of given position
+     * Check if given position is in colombia
      * @param clat center latitude
      * @param clon center longitude
-     * @param radius radius IN METER
      */
     public IsInColombiaRequest(double clat, double clon) {
         super("SELECT ST_CONTAINS(geom, ST_SetSRID(ST_MakePoint(?, ?), 4326)) FROM national;",

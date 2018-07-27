@@ -1,15 +1,14 @@
-package test;
-
-import main.sqlUtils.Connector;
-import main.sqlUtils.FindNearestHospitalRequest;
-import main.sqlUtils.IsInColombiaRequest;
-import main.sqlUtils.SchoolsInRadiusRequest;
+import sqlUtils.Connector;
+import sqlUtils.FindNearestHospitalRequest;
+import sqlUtils.IsInColombiaRequest;
+import sqlUtils.SchoolsInRadiusRequest;
 import org.junit.Test;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import static org.junit.Assert.*;
+
 /*
  * Tests for database related methods. All queries tests are made on a special testing database
  * with known values

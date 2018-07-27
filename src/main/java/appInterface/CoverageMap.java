@@ -1,10 +1,10 @@
-package main.appInterface;
+package appInterface;
 
 import com.lynden.gmapsfx.javascript.event.UIEventType;
 import com.lynden.gmapsfx.javascript.object.*;
 import com.lynden.gmapsfx.shapes.Polygon;
 import com.lynden.gmapsfx.shapes.PolygonOptions;
-import main.sqlUtils.NationalCoverageRequest;
+import sqlUtils.NationalCoverageRequest;
 import netscape.javascript.JSObject;
 
 import java.sql.ResultSet;
