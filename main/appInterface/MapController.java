@@ -71,6 +71,12 @@ public class MapController implements Initializable, MapComponentInitializedList
     @FXML
     private GoogleMapView mapView;
 
+    @FXML
+    private AnchorPane mapPane1;
+
+    @FXML
+    private AnchorPane mapPane2;
+
     private static LatLong bogota;
     private GoogleMap map;
 
@@ -123,18 +129,16 @@ public class MapController implements Initializable, MapComponentInitializedList
     protected void showHide() {
         showHide.setOnAction(event -> {
             if (showHide.isSelected()) {
-                SplitPane.setDividerPositions(0);
-                show.setMaxWidth(0.1);
-                ControlPane.setVisible(false);
-                ControlPane.setManaged(false);
-                scrollPane.setManaged(false);
+                SplitPane.setVisible(false);
+                mapPane2.setVisible(true);
+                mapPane1.getChildren().clear();
+                mapPane2.getChildren().setAll(mapView);
                 showHide.setGraphic(new ImageView(one));
             } else {
-                SplitPane.getDividers().get(0).setPosition(0.3);
-                ControlPane.setVisible(true);
-                ControlPane.setManaged(true);
-                scrollPane.setManaged(true);
-                scrollPane.setVisible(true);
+                SplitPane.setVisible(true);
+                mapPane2.setVisible(false);
+                mapPane2.getChildren().clear();
+                mapPane1.getChildren().setAll(mapView);
                 showHide.setGraphic(new ImageView(two));
             }
         });
