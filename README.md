@@ -32,21 +32,19 @@ It provides information on the location of health facilities and schools in Colo
 The application can either be built from sources or run precompiled.
 
 #### From source
-This application can be built using [maven](https://maven.apache.org/download.cgi):
-* Run ```mvn install``` from the command line to make the jar 
-* Run the ```CAPPS-1.0-jar-with-dependencies.jar``` as below
+This application can be built using [maven](https://maven.apache.org/download.cgi). From the command line, in the project folder:
+* Run ```mvn install``` to make the jar 
+* Run ```java -jar target\CAPPS-1.0-jar-with-dependencies.jar```
 
 To run tests:
 * Run ```mvn test``` from the command line
+
+Note: If you have issues with maven not finding the correct compiler, please follow [these](http://roufid.com/no-compiler-is-provided-in-this-environment/) instructions.
 
 #### Precompiled .jar (all dependencies included)
 
 * Download [CAPPS-1.0-jar-with-dependencies.jar](target/CAPPS-1.0-jar-with-dependencies.jar)
 * Double click the file to run
-
-OR
-
-* Run ```java -jar CAPPS-1.0-jar-with-dependencies.jar``` from the command line
 
 ---
 
