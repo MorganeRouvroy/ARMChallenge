@@ -6,8 +6,6 @@ import com.lynden.gmapsfx.shapes.Polygon;
 import com.lynden.gmapsfx.shapes.PolygonOptions;
 import main.sqlUtils.NationalCoverageRequest;
 import netscape.javascript.JSObject;
-import org.w3c.dom.events.UIEvent;
-
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,14 +31,12 @@ public class CoverageMap {
             MVCArray path = convertToLatLong(res);
             LatLong centre = new LatLong(0.0, 0.0);
             double avgDist = -1;
-            double score = -1;
+
             try {
                 res.beforeFirst();
                 res.next();
                 centre = new LatLong(res.getDouble(4), res.getDouble(5));
                 avgDist = res.getDouble(6);
-                score = res.getDouble(3);
-                System.out.format("Polygon centre is %.2f, %.2f%n", centre.getLatitude(), centre.getLongitude());
                 res.isBeforeFirst();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -60,7 +56,7 @@ public class CoverageMap {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println("score is " + score);
+
         if (score == -1) {
             return "#303030"; //no data == grey
         } else {
@@ -69,7 +65,6 @@ public class CoverageMap {
             String green = Integer.toHexString((int) (255 * score));
             green = (green.length() == 2) ? green : ("00".substring(2 - green.length()) + green);
             String color = "#"+red+green+"00";
-            System.out.println("color : " +color );
             return color;
         }
     }
@@ -106,20 +101,13 @@ public class CoverageMap {
         map.addMapShape(polygon);
 
         //INFO WINDOW
-        //GET POLYGON CENTRE
-//        LatLongBounds bnds = polygon.getBounds();
-//        System.out.println(bnds.toString());
-//        LatLong SW = bnds.getSouthWest();
-//        LatLong NE = bnds.getNorthEast();
-//        LatLong centre = new LatLong(0.5*(SW.getLatitude() + NE.getLatitude()), 0.5*(SW.getLongitude() + SW.getLongitude()));
-//        LatLong centre = new LatLong(0.0,0.0);
         InfoWindowOptions infOpt = new InfoWindowOptions();
         if(score < 0) {
             infOpt.content(name + " <br/> No schools found")
                     .position(centre)
                     .disableAutoPan(true);
         } else {
-            infOpt.content(name + " <br/> Average distance from schools to nearest hospital: " + Math.round(score*100)/100.0 +"km")
+            infOpt.content(name + " <br/> Avg. distance: " + Math.round(score * 100) / 100.0 + "km")
                     .position(centre)
                     .disableAutoPan(true);
         }
