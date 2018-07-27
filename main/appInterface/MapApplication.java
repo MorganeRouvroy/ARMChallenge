@@ -5,15 +5,13 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
 import javafx.scene.image.Image;
+import javafx.stage.Stage;
 import main.sqlUtils.Connector;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.net.URL;
-import java.awt.*;
 
 public class MapApplication extends Application {
 
@@ -44,6 +42,7 @@ public class MapApplication extends Application {
     public void stop(){
         Connector.closeCon();
     }
+
     /**
      * The main() method is ignored in correctly deployed JavaFX application.
      * main() serves only as fallback in case the application can not be

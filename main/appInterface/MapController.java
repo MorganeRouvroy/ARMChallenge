@@ -15,7 +15,10 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import main.sqlUtils.*;
+import main.sqlUtils.FindNearestHospitalRequest;
+import main.sqlUtils.HospitalsInRadiusRequest;
+import main.sqlUtils.IsInColombiaRequest;
+import main.sqlUtils.SchoolsInRadiusRequest;
 
 import java.net.URL;
 import java.sql.ResultSet;
@@ -128,7 +131,7 @@ public class MapController implements Initializable, MapComponentInitializedList
             LatLong coords = new LatLong(res.getDouble(3), res.getDouble(4));
             String name = res.getString(2);
 
-            display.setText(String.format("Closest hospital was %s at %.3f, %.3f which is %.3fkm away from current location%n", name, coords.getLatitude(), coords.getLongitude(), coords.distanceFrom(map.getCenter())/1000));
+            display.setText(String.format("Closest health site was %s at %.3f, %.3f which is %.3fkm away from current location%n", name, coords.getLatitude(), coords.getLongitude(), coords.distanceFrom(map.getCenter()) / 1000));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -161,13 +164,12 @@ public class MapController implements Initializable, MapComponentInitializedList
             HospitalsInRadiusRequest request = new HospitalsInRadiusRequest(map.getCenter(), radius);
             displayResultSet(request.getRequestResult(), true, false);
 
-            display.setText(String.format("Found %d hospitals within %.2fkm of %.3f, %.3f%n", request.resultCount(), radius/1000, map.getCenter().getLatitude(), map.getCenter().getLongitude()));
+            display.setText(String.format("Found %d health sites within %.2fkm of %.3f, %.3f%n", request.resultCount(), radius / 1000, map.getCenter().getLatitude(), map.getCenter().getLongitude()));
 
             if(request.resultCount() > 0){drawRadius(map.getCenter(), radius);}
             request.closeRequest();
         }
     }
-
 
     /* Listener for the heatmap checkbox. */
     @FXML

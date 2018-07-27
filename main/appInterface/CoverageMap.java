@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class CoverageMap {
+class CoverageMap {
 
     private ArrayList<Polygon> polygons = new ArrayList<>();
     private ArrayList<InfoWindow> infs = new ArrayList<>();
@@ -64,8 +64,8 @@ public class CoverageMap {
             red = (red.length() == 2) ? red : ("00".substring(2 - red.length()) + red);
             String green = Integer.toHexString((int) (255 * score));
             green = (green.length() == 2) ? green : ("00".substring(2 - green.length()) + green);
-            String color = "#"+red+green+"00";
-            return color;
+
+            return "#" + red + green + "00";
         }
     }
 
@@ -127,7 +127,7 @@ public class CoverageMap {
         infsOpen = !infsOpen;
     }
 
-    public void changeInfoWindows(boolean show){
+    void changeInfoWindows(boolean show) {
         if(!show){
             //Hide all info windows
             for (InfoWindow inf : infs) {

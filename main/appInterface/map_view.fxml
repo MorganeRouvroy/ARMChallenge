@@ -3,9 +3,9 @@
 <?scenebuilder-stylesheet ControllerStyle.css?>
 
 <?import com.lynden.gmapsfx.GoogleMapView?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
 <BorderPane prefHeight="500.0" prefWidth="800.0" stylesheets="@ControllerStyle.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.appInterface.MapController">
 
     <center>
@@ -22,7 +22,7 @@
 
                     <ScrollPane fitToWidth="true" hbarPolicy="NEVER" HBox.hgrow="ALWAYS">
                         <padding>
-                            <Insets bottom="0" left="10.0" right ="10.0" top="0"/>
+                            <Insets left="10.0" right="10.0"/>
                         </padding>
                         <VBox alignment="CENTER" prefWidth="300" spacing="35"
                               stylesheets="@ControllerStyle.css">
@@ -35,18 +35,18 @@
 
                             <VBox>
                                 <Label text="Find nearby:" styleClass="label"/>
-                                <GridPane alignment="CENTER" vgap="20" HBox.hgrow="ALWAYS">
+                                <GridPane alignment="CENTER" vgap="10" HBox.hgrow="ALWAYS">
                                     <VBox alignment="CENTER">
                                     <Label text="Choose radius (km) from map center" wrapText="true"
                                            styleClass="labelItalic" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                                    </VBox>
                                     <TextField fx:id="radiusSelection" alignment="CENTER"
                                                onAction="#getRangeField"
                                                promptText="e.g. 10.5"
                                                styleClass="text-field, text-area"
                                                stylesheets="@ControllerStyle.css"
                                                GridPane.columnIndex="0" GridPane.rowIndex="1"
-                                               HBox.hgrow="ALWAYS"/>
+                                               HBox.hgrow="ALWAYS" maxWidth="100"/>
+                                    </VBox>
                                     <HBox alignment="CENTER" GridPane.columnIndex="0"
                                           GridPane.rowIndex="2" HBox.hgrow="ALWAYS">
                                         <Button onAction="#findHospital"
@@ -70,7 +70,7 @@
                                                styleClass="text-field, text-area"
                                                stylesheets="@ControllerStyle.css"
                                                GridPane.columnIndex="0" GridPane.rowIndex="0"
-                                               HBox.hgrow="ALWAYS"/>
+                                               HBox.hgrow="ALWAYS" prefWidth="180"/>
                                     <VBox alignment="CENTER" GridPane.columnIndex="0"
                                           GridPane.rowIndex="1" HBox.hgrow="ALWAYS">
                                         <Button onAction="#searchForLocation"
@@ -91,8 +91,8 @@
                                           onAction="#changeHeatmapVisibility" styleClass="check-box"
                                           stylesheets="@ControllerStyle.css" text="Display coverage"/>
                             </VBox>
-                            <Label text="Click states to show average distance from schools to nearest hospital."
-                                       textAlignment="CENTER" styleClass="labelItalic" wrapText="true"/>
+                            <Label text="Click states to show average distance from schools to nearest health site."
+                                   textAlignment="CENTER" styleClass="labelItalic" wrapText="true"/>
 
                             <Separator prefWidth="200.0"/>
 
