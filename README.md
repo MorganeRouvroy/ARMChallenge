@@ -94,6 +94,7 @@ The `Clear Map` button clears the map of markers and other information.
 ##### Example Usage
 The sample below shows steps taken to visualise all schools within a certain radius of the nearest health facility.
 
+![Project Image](pictures/two_function.gif)
 ---
 
 ### Misc
