@@ -52,7 +52,7 @@
                                         <Button onAction="#findHospital"
                                                 prefWidth="140" styleClass="button-raised"
                                                 stylesheets="@../css/ControllerStyle.css"
-                                                text="Health site" textAlignment="CENTER"/>
+                                                text="Health sites" textAlignment="CENTER"/>
                                         <Button onAction="#findSchool"
                                                 prefWidth="140" styleClass="button-raised"
                                                 stylesheets="@../css/ControllerStyle.css"
