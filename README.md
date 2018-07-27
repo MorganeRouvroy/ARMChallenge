@@ -97,4 +97,4 @@ The sample below shows steps taken to visualise all schools within a certain rad
 
 ### Misc
 * The provided schools dataset contains information about over 60,000 seemingly random buildings in Colombia, including gas stations, museums, shops etc; it has been filtered down to around 4000 schools by keywords (e.g. 'Escuela'), but some may be missing.
-* Formal tests were conducted on the SQL requests - the tests are located in testSQL.java and are self explanatory.
+* Formal tests were conducted on the SQL requests - the tests are located in testSQL.java and are self explanatory. Informal tests were conducted on the UI interface to ensure it handles a varying range of user interaction.
