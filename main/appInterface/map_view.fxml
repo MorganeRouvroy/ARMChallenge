@@ -26,7 +26,7 @@
         <HBox>
             <children>
                 <VBox fx:id="show" styleClass="left" stylesheets="@ControllerStyle.css" HBox.hgrow="NEVER">
-                    <ToggleButton fx:id="showHide" onAction="#showHide" prefWidth="20" styleClass="button,button-image1" stylesheets="@ControllerStyle.css" textAlignment="CENTER" />
+                    <ToggleButton fx:id="showHide" onAction="#showHide" prefWidth="20" styleClass="button" stylesheets="@ControllerStyle.css" textAlignment="CENTER" />
                 </VBox>
 
                 <StackPane HBox.hgrow="ALWAYS">
