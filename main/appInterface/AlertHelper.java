@@ -1,4 +1,4 @@
-package appInterface;
+package main.appInterface;
 
 import javafx.scene.control.Alert;
 import javafx.stage.Window;

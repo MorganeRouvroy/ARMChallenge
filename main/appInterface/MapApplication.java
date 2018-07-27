@@ -26,9 +26,6 @@ public class MapApplication extends Application {
     public void start(Stage stage) throws Exception {
         // Stage -> Scene -> Parent
 
-//        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("map_view.fxml"));
-//        loader.setControllerFactory( c -> new MapController() );
-//        Parent root = loader.load();
         new Connector();
         Parent root = FXMLLoader.load(getClass().getResource("map_view.fxml"));
 

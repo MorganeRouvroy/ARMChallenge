@@ -6,19 +6,22 @@ import com.lynden.gmapsfx.javascript.object.*;
 import com.lynden.gmapsfx.service.geocoding.GeocoderStatus;
 import com.lynden.gmapsfx.service.geocoding.GeocodingResult;
 import com.lynden.gmapsfx.service.geocoding.GeocodingService;
+import com.lynden.gmapsfx.service.geocoding.GeocodingServiceCallback;
 import com.lynden.gmapsfx.shapes.Circle;
 import com.lynden.gmapsfx.shapes.CircleOptions;
+import javafx.beans.property.DoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import main.sqlUtils.FindNearestHospitalRequest;
-import main.sqlUtils.HospitalsInRadiusRequest;
-import main.sqlUtils.IsInColombiaRequest;
-import main.sqlUtils.SchoolsInRadiusRequest;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import main.sqlUtils.*;
+
 
 import java.net.URL;
 import java.sql.ResultSet;
@@ -26,15 +29,39 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import static java.lang.Float.parseFloat;
+
 public class MapController implements Initializable, MapComponentInitializedListener {
 
     private ArrayList<Circle> radii = new ArrayList<>();
     private CoverageMap coverageMap;
 
     @FXML
+    private CheckBox heatMap;
+
+
+    @FXML
     private SplitPane SplitPane = new SplitPane();
     @FXML
+    private ScrollPane scrollPane;
+    @FXML
+    private VBox ControlPane = new VBox();
+    @FXML
+    private VBox show = new VBox();
+
+    @FXML
+    private Button hospital;
+    @FXML
+    private Button school;
+    @FXML
+    private Button nearestHospital;
+    @FXML
+    private Button clear;
+    @FXML
+    private Button search;
+    @FXML
     private ToggleButton showHide;
+
 
     @FXML
     private TextField radiusSelection;
@@ -48,9 +75,11 @@ public class MapController implements Initializable, MapComponentInitializedList
 
     @FXML
     private AnchorPane mapPane1;
+
     @FXML
     private AnchorPane mapPane2;
 
+    private static LatLong bogota;
     private GoogleMap map;
 
     private Image one = new Image(getClass().getResourceAsStream("1.png"));
@@ -61,7 +90,7 @@ public class MapController implements Initializable, MapComponentInitializedList
         mapView.addMapInializedListener(this);
 
         // This beautiful line won't allow any other input than integers
-        radiusSelection.textProperty().addListener(new appInterface.IntegerOnlyTextListener(radiusSelection));
+        radiusSelection.textProperty().addListener(new IntegerOnlyTextListener(radiusSelection));
 
         //The collapsing button has to be initialised here
         showHide.setGraphic(new ImageView(two));
@@ -70,7 +99,7 @@ public class MapController implements Initializable, MapComponentInitializedList
 
     @Override
     public void mapInitialized() {
-        LatLong bogota = new LatLong(4.657865, -74.100264);
+        bogota = new LatLong(4.657865, -74.100264);
         //Set the initial properties of the map.
         MapOptions mapOptions = new MapOptions();
         mapOptions.center(bogota)
@@ -89,7 +118,7 @@ public class MapController implements Initializable, MapComponentInitializedList
     protected void searchForLocation() {
         String addrStr = location.getText();
 
-        if(addrStr.isEmpty()){
+        if(addrStr.isEmpty() || addrStr == null){
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please input a search string e.g. 'Hospital de San Jose'", ButtonType.CLOSE);
             alert.setTitle("Invalid search");
             alert.showAndWait();
@@ -118,7 +147,7 @@ public class MapController implements Initializable, MapComponentInitializedList
     }
 
     @FXML
-    protected void nearestHospital () {
+    protected void nearestHospital (ActionEvent event) {
         //For clicking schools button
         FindNearestHospitalRequest request = new FindNearestHospitalRequest(map.getCenter());
 
@@ -138,7 +167,7 @@ public class MapController implements Initializable, MapComponentInitializedList
         }
 
         //Display the hospital point
-        displayResultSet(res, true, true);
+        displayResultSet(res, true, true, false);
 
 
     }
@@ -152,8 +181,8 @@ public class MapController implements Initializable, MapComponentInitializedList
 
             display.setText(String.format("Found %d schools within %.2fkm of %.3f, %.3f%n", request.resultCount(), radius/1000, map.getCenter().getLatitude(), map.getCenter().getLongitude()));
 
-            displayResultSet(request.getRequestResult(), false, false);
-            if(request.resultCount() > 0){drawRadius(map.getCenter(), radius);}
+            displayResultSet(request.getRequestResult(), false, false, false);
+            if(request.resultCount() > 0){drawRadius(map.getCenter(), radius, true);}
             request.closeRequest();
         }
     }
@@ -163,11 +192,11 @@ public class MapController implements Initializable, MapComponentInitializedList
         double radius = setRangeField(event)*1000;
         if(radius > 0){
             HospitalsInRadiusRequest request = new HospitalsInRadiusRequest(map.getCenter(), radius);
-            displayResultSet(request.getRequestResult(), true, false);
+            displayResultSet(request.getRequestResult(), true, false, false);
 
             display.setText(String.format("Found %d hospitals within %.2fkm of %.3f, %.3f%n", request.resultCount(), radius/1000, map.getCenter().getLatitude(), map.getCenter().getLongitude()));
 
-            if(request.resultCount() > 0){drawRadius(map.getCenter(), radius);}
+            if(request.resultCount() > 0){drawRadius(map.getCenter(), radius, true);}
             request.closeRequest();
         }
     }
@@ -186,25 +215,31 @@ public class MapController implements Initializable, MapComponentInitializedList
     /* Listener for the Text field. */
     @FXML
     protected double setRangeField(ActionEvent event) {
-        int radius = parseInt(radiusSelection.getText());
+        float radius;
 
-        if (radius < 0 || radius > 50000) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to parse values in the range field.\n" +
-                    "Please ensure the values are in the range.", ButtonType.CLOSE);
-            alert.setTitle("Wrong input!");
-            alert.showAndWait();
-            radius = -1;
-        }
-        else if (radius == 0) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to parse values in the range field.\n" +
-                    "Please ensure the values are not null.", ButtonType.CLOSE);
+        try {
+            radius = parseFloat(radiusSelection.getText());
+
+            if (radius <= 0 || radius > 50000) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to parse value of the range field.\n" +
+                        "Please ensure the values are in the range 1 to 50000.", ButtonType.CLOSE);
+                alert.setTitle("Failed to parse values");
+                alert.showAndWait();
+                radius = -1;
+            }
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to parse value of the range field.\n" +
+                    "Please ensure the values are in the range 1 to 50000.", ButtonType.CLOSE);
             alert.setTitle("Failed to parse values");
             alert.showAndWait();
+
             radius = -1;
         }
+
         return radius;
     }
 
+    /* Listener for the clear map button. */
     @FXML
     protected void clearMap(ActionEvent event) {
         map.clearMarkers();
@@ -218,29 +253,10 @@ public class MapController implements Initializable, MapComponentInitializedList
     }
 
     /**
-     * Method that catches the null input or 0 input
-     *
-     * @param s the string converted to number
-     * @return the numeric value for the input
-     */
-    private static int parseInt(final /*@Nullable*/ String s) {
-        try {
-            if (s.equals("")) {
-                return -1;
-            } else {
-                return Integer.parseInt(s);
-            }
-        } catch (final NumberFormatException ex) {
-            return -1;
-        }
-    }
-
-    /**
      * Creates a school marker at desired latlong
      * @param latlong: Coordinates of marker
      * @param name: Name of marker
      */
-
     private void schoolMarker(LatLong latlong, String name){
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latlong)
@@ -253,8 +269,8 @@ public class MapController implements Initializable, MapComponentInitializedList
 
     /**
      * Creates a hospital marker at desired LatLong
-     * @param latlong: Position of hospital marker
-     * @param name: Name of hospital
+     * @param latlong: Coordinates of marker
+     * @param name: Name of marker
      */
     private void hospitalMarker(LatLong latlong, String name){
         MarkerOptions markerOptions = new MarkerOptions();
@@ -269,10 +285,10 @@ public class MapController implements Initializable, MapComponentInitializedList
 
     /**
      * Draws radius centred at latlong
-     * @param latlong : centre of radius
-     * @param radius : radius of circle
+     * @param latlong: Coordinates of marker
+     * @param radius
      */
-    private void drawRadius(LatLong latlong, double radius){
+    protected void drawRadius(LatLong latlong, double radius, boolean fit){
         CircleOptions circleOptions = new CircleOptions();
         circleOptions.center(latlong)
                 .radius(radius)
@@ -286,21 +302,25 @@ public class MapController implements Initializable, MapComponentInitializedList
         map.addMapShape(circle);
         radii.add(circle);
 
-        //Fit map to bounding box
-        LatLongBounds bounds = new LatLongBounds();
-        bounds.extend(latlong.getDestinationPoint(90.0, radius));
-        bounds.extend(latlong.getDestinationPoint(270.0, radius));
-        map.fitBounds(bounds);
+        if(fit){
+            //Fit map to bounding box
+            LatLongBounds bounds = new LatLongBounds();
+            bounds.extend(latlong.getDestinationPoint(90.0, radius));
+            bounds.extend(latlong.getDestinationPoint(270.0, radius));
+            map.fitBounds(bounds);
+        }
     }
 
     /**
      * Displays coordinates of a result set
      * Expect result set with fields {id}, {name}, {lat}, {long}
-     * @param res : The ResultSet
-     * @param hospital : True if displaying hospital, false for school
-     * @param recentre : If True, recentres to middle of points (without zooming)
+     * @param res: The ResultSet
+     * @param hospital: True if displaying hospital, false for school
+     * @param recentre: If True, recentres to middle of points (without zooming)
+     * @param fit: If True, fits map to points (adjust location and zoom
+     * if recentre AND fit true, will only fit.
      */
-    private void displayResultSet(ResultSet res, boolean hospital, boolean recentre){
+    protected void displayResultSet(ResultSet res, boolean hospital, boolean recentre, boolean fit){
         LatLongBounds bounds = new LatLongBounds();
 
         try {
@@ -318,7 +338,9 @@ public class MapController implements Initializable, MapComponentInitializedList
                         schoolMarker(coords, res.getString(2));
                     }
                 }
-                if(recentre){
+                if(fit) {
+                    map.fitBounds(bounds);
+                }else if(recentre){
                     map.setCenter(new LatLong(0.5*(bounds.getNorthEast().getLatitude() + bounds.getSouthWest().getLatitude()),
                             0.5*(bounds.getNorthEast().getLongitude() + bounds.getSouthWest().getLongitude())));
                 }
@@ -328,11 +350,7 @@ public class MapController implements Initializable, MapComponentInitializedList
         }
     }
 
-    /**
-     * Given a string, will use Geocoding service to search for an address
-     * @param address: User input string
-     */
-    private void findAddress(String address) {
+    public void findAddress(String address) {
 
         GeocodingService geocodingService = new GeocodingService();
         geocodingService.geocode(address, (GeocodingResult[] results, GeocoderStatus status) -> {
@@ -357,7 +375,7 @@ public class MapController implements Initializable, MapComponentInitializedList
             }else{
                 if(llb != null) {
                     map.fitBounds(llb);
-                }else {
+                }else if(centre != null){
                     map.setCenter(centre);
                 }
                 display.setText("Best match in Colombia is " + res);
@@ -367,12 +385,6 @@ public class MapController implements Initializable, MapComponentInitializedList
         });
     }
 
-    /**
-     * Checks whether a requested LatLong is in Colombia using IsInColombia request
-     * @param latlong: Coordinates to check
-     *
-     * @return: True if latlong is in colombia
-     */
     private boolean isInColombia(LatLong latlong){
         IsInColombiaRequest request = new IsInColombiaRequest(latlong);
         ResultSet res = request.getRequestResult();
