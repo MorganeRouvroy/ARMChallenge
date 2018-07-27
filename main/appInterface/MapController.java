@@ -108,7 +108,15 @@ public class MapController implements Initializable, MapComponentInitializedList
 
     @FXML
     protected void searchForLocation() {
+        String addrStr = location.getText();
 
+        if(addrStr.isEmpty() || addrStr == null){
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please input a search string e.g. 'Hospital de San Jose'", ButtonType.CLOSE);
+            alert.setTitle("Invalid search");
+            alert.showAndWait();
+        }else{
+            findAddress(addrStr);
+        }
     }
 
     @FXML
@@ -207,7 +215,6 @@ public class MapController implements Initializable, MapComponentInitializedList
             Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to parse values in the range field.\n" +
                     "Please ensure the values are in the range.", ButtonType.CLOSE);
             alert.setTitle("Wrong input!");
-            System.out.println("Bye");
             alert.showAndWait();
             radius = -1;
         }
@@ -361,27 +368,25 @@ public class MapController implements Initializable, MapComponentInitializedList
             LatLongBounds llb = null;
             String res = null;
             boolean foundResult = false;
-            int i = 1;
+
             for (GeocodingResult result : results) {
                 centre = new LatLong(result.getGeometry().getLocation().getLatitude(), result.getGeometry().getLocation().getLongitude());
-                System.out.println("Checking geocoding result " + i);
                 if(isInColombia(centre)){
                     res = result.getFormattedAddress();
                     llb = result.getGeometry().getViewPort();
                     foundResult = true;
                     break;
                 }
-                i+=1;
             }
             if(!foundResult){
-                System.out.println("Could not find results in Colombia corresponding to search '" + address + "'");
+                display.setText("Could not find results in Colombia corresponding to search '" + address + "'");
             }else{
                 if(llb != null) {
                     map.fitBounds(llb);
                 }else if(centre != null){
                     map.setCenter(centre);
                 }
-                System.out.println("Best match in Colombia is " + res);
+                display.setText("Best match in Colombia is " + res);
             }
 
 
